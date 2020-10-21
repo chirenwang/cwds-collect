@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wcc.wds.web.dao.CollectInstanceDao">
+  <select id="selectCollectInstance" resultType="com.wcc.wds.web.bean.CollectInstanceBean">
+    select * from wds_collect_task
+  </select>
+
+  <insert id="insertCollectInstance" parameterType="com.wcc.wds.web.bean.CollectInstanceBean">
+    insert into wds_collect_task(instance_id,task_id,instance_status,create_time)
+    values (#{instance_id},#{task_id},#{instance_status},#{create_time})
+  </insert>
+
+  <update id="updateInstanceStatus" parameterType="com.wcc.wds.web.bean.CollectInstanceBean">
+    update wds_collect_task set instance_status = #{instance_status}
+  </update>
+
+</mapper>

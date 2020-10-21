@@ -1,4 +1,4 @@
-package com.wcc.wds.bean;
+package com.wcc.wds.web.bean;
 
 /**
  * 数据撤稿与恢复接口返回参数

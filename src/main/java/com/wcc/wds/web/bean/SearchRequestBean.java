@@ -1,4 +1,4 @@
-package com.wcc.wds.bean;
+package com.wcc.wds.web.bean;
 
 public class SearchRequestBean {
 

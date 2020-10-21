@@ -1,8 +1,8 @@
 package com.wcc.wds.web.controller;
 
-import com.wcc.wds.bean.CollectTaskResponseBean;
-import com.wcc.wds.bean.DataModifyResponseBean;
-import com.wcc.wds.bean.SearchResponseBean;
+import com.wcc.wds.web.bean.CollectTaskResponseBean;
+import com.wcc.wds.web.bean.DataModifyResponseBean;
+import com.wcc.wds.web.bean.SearchResponseBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

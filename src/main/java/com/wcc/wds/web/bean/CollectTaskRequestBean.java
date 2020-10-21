@@ -1,4 +1,4 @@
-package com.wcc.wds.bean;
+package com.wcc.wds.web.bean;
 
 
 /**
@@ -17,10 +17,6 @@ public class CollectTaskRequestBean {
      * 采集路径
      */
     private String collectPath;
-    /**
-     * 发布规则
-     */
-    private ReleaseRuleBean releaseRule;
     /**
      * 采集时间
      */

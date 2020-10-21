@@ -1,4 +1,4 @@
-package com.wcc.wds.bean;
+package com.wcc.wds.web.bean;
 
 /**
  * 采集任务接口返回参数

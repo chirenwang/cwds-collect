@@ -1,4 +1,4 @@
-package com.wcc.wds.bean;
+package com.wcc.wds.web.bean;
 
 
 /**
@@ -18,9 +18,9 @@ public class CollectTaskBean {
      */
     private String collect_path;
     /**
-     * 发布规则
+     * 文件名正则
      */
-    private String release_rule_id;
+    private String regex;
     /**
      * 采集时间
      */
@@ -66,12 +66,12 @@ public class CollectTaskBean {
         this.collect_path = collect_path;
     }
 
-    public String getRelease_rule_id() {
-        return release_rule_id;
+    public String getRegex() {
+        return regex;
     }
 
-    public void setRelease_rule_id(String release_rule_id) {
-        this.release_rule_id = release_rule_id;
+    public void setRegex(String regex) {
+        this.regex = regex;
     }
 
     public String getCollect_time() {
