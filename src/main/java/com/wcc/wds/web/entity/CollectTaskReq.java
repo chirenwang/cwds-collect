@@ -1,10 +1,10 @@
-package com.wcc.wds.web.bean;
+package com.wcc.wds.web.entity;
 
 
 /**
  * 采集任务接口请求参数
  */
-public class CollectTaskRequestBean {
+public class CollectTaskReq {
     /**
      * 操作类型
      */

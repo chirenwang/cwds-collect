@@ -1,4 +1,4 @@
-package com.wcc.wds.web.bean;
+package com.wcc.wds.web.model;
 
 
 import java.util.Date;
@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * 采集任务实例表Dao
  */
-public class CollectInstanceBean {
+public class CollectInstance {
     /**
      * 实例id
      */

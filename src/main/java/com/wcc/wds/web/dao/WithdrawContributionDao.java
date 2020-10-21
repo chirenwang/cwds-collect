@@ -1,18 +1,18 @@
 package com.wcc.wds.web.dao;
 
-import com.wcc.wds.web.bean.WithdrawContributionBean;
+import com.wcc.wds.web.model.WithdrawContribution;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WithdrawContributionDao {
 
-    WithdrawContributionBean selectWithdraw();
+    WithdrawContribution selectAll();
 
-    WithdrawContributionBean selectWithdrawById(WithdrawContributionBean withdrawContributionBean);
+    WithdrawContribution selectById(String id);
 
-    void insertWithdraw(WithdrawContributionBean withdrawContributionBean);
+    void insert(WithdrawContribution withdrawContribution);
 
-    void deleteWithdraw(WithdrawContributionBean withdrawContributionBean);
+    void deleteById(String id);
 
 
 }

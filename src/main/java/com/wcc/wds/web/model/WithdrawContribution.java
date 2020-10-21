@@ -1,9 +1,9 @@
-package com.wcc.wds.web.bean;
+package com.wcc.wds.web.model;
 
 /**
  * 撤稿状态表Dao
  */
-public class WithdrawContributionBean {
+public class WithdrawContribution {
     /**
      * 稿件id
      */

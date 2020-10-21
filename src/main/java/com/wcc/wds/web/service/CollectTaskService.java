@@ -1,9 +1,8 @@
 package com.wcc.wds.web.service;
 
-import com.sun.media.sound.RIFFInvalidFormatException;
-import com.wcc.wds.web.bean.CollectTaskBean;
-import com.wcc.wds.web.bean.CollectTaskRequestBean;
-import com.wcc.wds.web.bean.CollectTaskResponseBean;
+import com.wcc.wds.web.model.CollectTask;
+import com.wcc.wds.web.entity.CollectTaskReq;
+import com.wcc.wds.web.entity.CollectTaskResp;
 import com.wcc.wds.web.dao.CollectInstanceDao;
 import com.wcc.wds.web.dao.CollectTaskDao;
 import com.wcc.wds.web.dao.WithdrawContributionDao;
@@ -55,76 +54,75 @@ public class CollectTaskService {
     private WithdrawContributionDao withdrawContributionDao;
 
 
-    public CollectTaskResponseBean collectTask(CollectTaskRequestBean collectTaskRequestBean){
+    public CollectTaskResp collectTask(CollectTaskReq collectTaskReq){
         //返回参数
-        CollectTaskResponseBean collectTaskResponseBean = new CollectTaskResponseBean(1, "success");
+        CollectTaskResp collectTaskResp = new CollectTaskResp(1, "success");
         try {
             //获取任务操作
-            String operate = collectTaskRequestBean.getOperate();
+            String operate = collectTaskReq.getOperate();
             switch (operate){
                 case CREATE:
-                    createTask(collectTaskRequestBean, collectTaskResponseBean);
+                    createTask(collectTaskReq, collectTaskResp);
                     break;
                 case MODIFY:
-                    modifyTask(collectTaskRequestBean, collectTaskResponseBean);
+                    modifyTask(collectTaskReq, collectTaskResp);
                     break;
                 case PAUSE:
-                    pauseTask(collectTaskRequestBean, collectTaskResponseBean);
+                    pauseTask(collectTaskReq, collectTaskResp);
                     break;
                 case DELETE:
-                    deleteTask(collectTaskRequestBean, collectTaskResponseBean);
+                    deleteTask(collectTaskReq, collectTaskResp);
                     break;
                 default:
                     //输入了未知的操作类型
                     logger.error("no such operate");
-                    collectTaskResponseBean.setMessage("no such operate");
-                    collectTaskResponseBean.setRetCode(-1);
+                    collectTaskResp.setMessage("no such operate");
+                    collectTaskResp.setRetCode(-1);
             }
         }catch (Exception e){
             //发生异常
             e.printStackTrace();
-            collectTaskResponseBean.setMessage(e.getMessage());
-            collectTaskResponseBean.setRetCode(-1);
+            collectTaskResp.setMessage(e.getMessage());
+            collectTaskResp.setRetCode(-1);
             logger.error(e.getMessage());
         }
-        return collectTaskResponseBean;
+        return collectTaskResp;
 
     }
 
 
-    private void createTask(CollectTaskRequestBean collectTaskRequestBean, CollectTaskResponseBean collectTaskResponseBean){
-        CollectTaskBean collectTaskBean = new CollectTaskBean();
+    private void createTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){
+        CollectTask collectTask = new CollectTask();
         UUID uuid = UUID.randomUUID();
         long createTime = System.currentTimeMillis();
-        collectTaskBean.setId(uuid.toString());
-        collectTaskBean.setCreateTime(createTime);
-        collectTaskBean.setCollectPath(collectTaskRequestBean.getCollectPath());
-        collectTaskBean.setCollectTime(collectTaskRequestBean.getCollectTime());
-        collectTaskBean.setRegex(collectTaskRequestBean.getRegex());
-        int revolution  = collectTaskRequestBean.getRevolution();
+        collectTask.setId(uuid.toString());
+        collectTask.setCreateTime(createTime);
+        collectTask.setCollectPath(collectTaskReq.getCollectPath());
+        collectTask.setCollectTime(collectTaskReq.getCollectTime());
+        collectTask.setRegex(collectTaskReq.getRegex());
+        int revolution  = collectTaskReq.getRevolution();
         if (revolution == 0){ revolution = DAY_MINUTE;}
-        collectTaskBean.setRevolution(revolution);
-        collectTaskBean.setTaskName(collectTaskRequestBean.getTaskName());
-        collectTaskBean.setThreadNum(collectTaskRequestBean.getThreadNum());
-        collectTaskBean.setTaskStatus(RUNNING);
-
+        collectTask.setRevolution(revolution);
+        collectTask.setTaskName(collectTaskReq.getTaskName());
+        collectTask.setThreadNum(collectTaskReq.getThreadNum());
+        collectTask.setTaskStatus(RUNNING);
         try{
-            collectTaskDao.insertCollectTask(collectTaskBean);
+            collectTaskDao.insert(collectTask);
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e.getMessage());
-            collectTaskResponseBean.setRetCode(-1);
-            collectTaskResponseBean.setMessage(e.getMessage());
+            collectTaskResp.setRetCode(-1);
+            collectTaskResp.setMessage(e.getMessage());
         }
     }
 
-    private void modifyTask(CollectTaskRequestBean collectTaskRequestBean, CollectTaskResponseBean collectTaskResponseBean){
-        CollectTaskBean collectTaskBean = new CollectTaskBean();
+    private void modifyTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){
+        CollectTask collectTask = new CollectTask();
 
     }
 
-    private void pauseTask(CollectTaskRequestBean collectTaskRequestBean, CollectTaskResponseBean collectTaskResponseBean){}
+    private void pauseTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){}
 
-    private void deleteTask(CollectTaskRequestBean collectTaskRequestBean, CollectTaskResponseBean collectTaskResponseBean){}
+    private void deleteTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){}
 
 }

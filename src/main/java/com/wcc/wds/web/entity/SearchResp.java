@@ -1,6 +1,6 @@
-package com.wcc.wds.web.bean;
+package com.wcc.wds.web.entity;
 
-public class SearchResponseBean {
+public class SearchResp {
 
     private int retCode;
 

@@ -1,9 +1,9 @@
-package com.wcc.wds.web.bean;
+package com.wcc.wds.web.entity;
 
 /**
  * 数据撤稿与恢复接口返回参数
  */
-public class DataModifyResponseBean {
+public class DataModifyResp {
     /**
      * 状态码
      */

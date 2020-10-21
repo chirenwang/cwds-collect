@@ -3,28 +3,33 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wcc.wds.web.dao.CollectInstanceDao">
-  <select id="selectCollectInstance" resultType="com.wcc.wds.web.bean.CollectInstanceBean">
+  <select id="selectAll" resultType="com.wcc.wds.web.model.CollectInstance">
     select * from wds_collect_task
   </select>
 
-  <insert id="insertCollectInstance" parameterType="com.wcc.wds.web.bean.CollectInstanceBean">
+  <insert id="insert" parameterType="com.wcc.wds.web.model.CollectInstance">
     insert into wds_collect_task(instance_id,task_id,instance_status,start_time)
     values (#{instanceId},#{taskId},#{instanceStatus},#{startTime})
   </insert>
 
-  <update id="updateInstanceStatus" parameterType="com.wcc.wds.web.bean.CollectInstanceBean">
-    update wds_collect_task set instance_status = #{instanceStatus}
-  </update>
-
-  <update id="updateEndTime">
-    update wds_collect_task set end_time = #{endTime}
-  </update>
-
-  <delete id="deleteInstance">
+  <delete id="deleteById">
     delete from wds_collect_task where instance_id = #{instanceId}
   </delete>
 
-  <select id="selectFailTask" resultType="com.wcc.wds.web.bean.CollectInstanceBean">
+  <update id="updateNotNullById">
+    update wds_collect_task
+    <set >
+      <if test=" instanceStatus != null">
+        instance_status = #{instanceStatus},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime},
+      </if>
+    </set>
+    where instance_id = #{instanceId}
+  </update>
+
+  <select id="selectFail" resultType="com.wcc.wds.web.model.CollectInstance">
     select task_id from wds_collect_task where instance_status = 'failed'
   </select>
 

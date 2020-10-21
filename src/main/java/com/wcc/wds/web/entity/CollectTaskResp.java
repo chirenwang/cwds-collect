@@ -1,12 +1,12 @@
-package com.wcc.wds.web.bean;
+package com.wcc.wds.web.entity;
 
 /**
  * 采集任务接口返回参数
  */
-public class CollectTaskResponseBean {
+public class CollectTaskResp {
 
 
-    public CollectTaskResponseBean(int retCode, String message) {
+    public CollectTaskResp(int retCode, String message) {
         this.retCode = retCode;
         this.message = message;
     }

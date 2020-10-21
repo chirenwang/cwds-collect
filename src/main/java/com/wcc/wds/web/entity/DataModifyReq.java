@@ -1,11 +1,11 @@
-package com.wcc.wds.web.bean;
+package com.wcc.wds.web.entity;
 
 import java.util.ArrayList;
 
 /**
  * 数据撤稿与恢复接口请求参数
  */
-public class DataModifyRequestBean {
+public class DataModifyReq {
 
     /**
      * 操作

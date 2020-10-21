@@ -1,10 +1,11 @@
 package com.wcc.wds.web.controller;
 
-import com.wcc.wds.web.bean.CollectTaskRequestBean;
-import com.wcc.wds.web.bean.CollectTaskResponseBean;
-import com.wcc.wds.web.bean.DataModifyResponseBean;
-import com.wcc.wds.web.bean.SearchResponseBean;
+import com.wcc.wds.web.entity.CollectTaskReq;
+import com.wcc.wds.web.entity.CollectTaskResp;
+import com.wcc.wds.web.entity.DataModifyResp;
+import com.wcc.wds.web.entity.SearchResp;
 import com.wcc.wds.web.service.CollectTaskService;
+import com.wcc.wds.web.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,30 +21,33 @@ public class CwdsCollectController {
     @Autowired
     private CollectTaskService collectTaskService;
 
+    @Autowired
+    private SearchService searchService;
+
     /**
      * 采集任务接口
      */
     @RequestMapping(value = "/collectTask", method = RequestMethod.POST)
-    public CollectTaskResponseBean collectTask(@RequestBody CollectTaskRequestBean collectTaskRequestBean){
-        return collectTaskService.collectTask(collectTaskRequestBean);
+    public CollectTaskResp collectTask(@RequestBody CollectTaskReq collectTaskReq){
+        return collectTaskService.collectTask(collectTaskReq);
     }
 
     /**
      * 数据撤稿及恢复接口
      */
     @RequestMapping(value = "/dataModify", method = RequestMethod.POST)
-    public DataModifyResponseBean dataModify(){
+    public DataModifyResp dataModify(){
 
-        return new DataModifyResponseBean();
+        return new DataModifyResp();
     }
 
     /**
      * 查询接口
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public SearchResponseBean search(){
+    public SearchResp search(){
 
-        return new SearchResponseBean();
+        return new SearchResp();
     }
 
 

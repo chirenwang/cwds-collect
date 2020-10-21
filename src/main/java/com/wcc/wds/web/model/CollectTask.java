@@ -1,10 +1,10 @@
-package com.wcc.wds.web.bean;
+package com.wcc.wds.web.model;
 
 
 /**
  * 采集任务表Dao
  */
-public class CollectTaskBean {
+public class CollectTask {
     /**
      * 任务名
      */
