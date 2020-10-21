@@ -1,11 +1,14 @@
 package com.wcc.wds.web.model;
 
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * 采集任务实例表Dao
  */
+@Data
 public class CollectInstance {
     /**
      * 实例id
@@ -32,51 +35,4 @@ public class CollectInstance {
      */
     private Date endTime;
 
-    public String getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
-
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getInstanceStatus() {
-        return instanceStatus;
-    }
-
-    public void setInstanceStatus(String instanceStatus) {
-        this.instanceStatus = instanceStatus;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
 }

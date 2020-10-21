@@ -1,9 +1,12 @@
 package com.wcc.wds.web.entity;
 
 
+import lombok.Data;
+
 /**
  * 采集任务接口请求参数
  */
+@Data
 public class CollectTaskReq {
     /**
      * 操作类型
@@ -34,59 +37,4 @@ public class CollectTaskReq {
      */
     private int threadNum;
 
-    public String getOperate() {
-        return operate;
-    }
-
-    public void setOperate(String operate) {
-        this.operate = operate;
-    }
-
-    public String getCollectPath() {
-        return collectPath;
-    }
-
-    public void setCollectPath(String collectPath) {
-        this.collectPath = collectPath;
-    }
-
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
-    public int getThreadNum() {
-        return threadNum;
-    }
-
-    public void setThreadNum(int threadNum) {
-        this.threadNum = threadNum;
-    }
-
-    public String getCollectTime() {
-        return collectTime;
-    }
-
-    public void setCollectTime(String collectTime) {
-        this.collectTime = collectTime;
-    }
-
-    public String getRegex() {
-        return regex;
-    }
-
-    public void setRegex(String regex) {
-        this.regex = regex;
-    }
-
-    public int getRevolution() {
-        return revolution;
-    }
-
-    public void setRevolution(int revolution) {
-        this.revolution = revolution;
-    }
 }

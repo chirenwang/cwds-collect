@@ -1,10 +1,13 @@
 package com.wcc.wds.web.entity;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 
 /**
  * 数据撤稿与恢复接口请求参数
  */
+@Data
 public class DataModifyReq {
 
     /**

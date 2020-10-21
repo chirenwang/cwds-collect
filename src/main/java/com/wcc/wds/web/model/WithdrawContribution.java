@@ -1,8 +1,11 @@
 package com.wcc.wds.web.model;
 
+import lombok.Data;
+
 /**
  * 撤稿状态表Dao
  */
+@Data
 public class WithdrawContribution {
     /**
      * 稿件id
@@ -21,36 +24,4 @@ public class WithdrawContribution {
      */
     private String file_path;
 
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getWithdraw_type() {
-        return withdraw_type;
-    }
-
-    public void setWithdraw_type(String withdraw_type) {
-        this.withdraw_type = withdraw_type;
-    }
-
-    public String getWithdraw_file_path() {
-        return withdraw_file_path;
-    }
-
-    public void setWithdraw_file_path(String withdraw_file_path) {
-        this.withdraw_file_path = withdraw_file_path;
-    }
-
-    public String getFile_path() {
-        return file_path;
-    }
-
-    public void setFile_path(String file_path) {
-        this.file_path = file_path;
-    }
 }

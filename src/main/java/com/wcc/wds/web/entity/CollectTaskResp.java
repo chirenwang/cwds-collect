@@ -1,8 +1,11 @@
 package com.wcc.wds.web.entity;
 
+import lombok.Data;
+
 /**
  * 采集任务接口返回参数
  */
+@Data
 public class CollectTaskResp {
 
 
@@ -20,19 +23,4 @@ public class CollectTaskResp {
      */
     private String message;
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getRetCode() {
-        return retCode;
-    }
-
-    public void setRetCode(int retCode) {
-        this.retCode = retCode;
-    }
 }

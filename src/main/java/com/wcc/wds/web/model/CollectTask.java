@@ -1,9 +1,12 @@
 package com.wcc.wds.web.model;
 
 
+import lombok.Data;
+
 /**
  * 采集任务表Dao
  */
+@Data
 public class CollectTask {
     /**
      * 任务名
@@ -42,75 +45,4 @@ public class CollectTask {
      */
     private long createTime;
 
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCollectPath() {
-        return collectPath;
-    }
-
-    public void setCollectPath(String collectPath) {
-        this.collectPath = collectPath;
-    }
-
-    public String getRegex() {
-        return regex;
-    }
-
-    public void setRegex(String regex) {
-        this.regex = regex;
-    }
-
-    public String getCollectTime() {
-        return collectTime;
-    }
-
-    public void setCollectTime(String collectTime) {
-        this.collectTime = collectTime;
-    }
-
-    public String getTaskStatus() {
-        return taskStatus;
-    }
-
-    public void setTaskStatus(String taskStatus) {
-        this.taskStatus = taskStatus;
-    }
-
-    public int getRevolution() {
-        return revolution;
-    }
-
-    public void setRevolution(int revolution) {
-        this.revolution = revolution;
-    }
-
-    public int getThreadNum() {
-        return threadNum;
-    }
-
-    public void setThreadNum(int threadNum) {
-        this.threadNum = threadNum;
-    }
-
-    public long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
-    }
 }
