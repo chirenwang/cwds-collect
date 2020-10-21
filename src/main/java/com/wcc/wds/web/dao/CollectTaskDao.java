@@ -1,7 +1,9 @@
 package com.wcc.wds.web.dao;
 
 import com.wcc.wds.web.bean.CollectTaskBean;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CollectTaskDao {
 
      CollectTaskBean selectCollectTask();

@@ -10,73 +10,73 @@ public class CollectInstanceBean {
     /**
      * 实例id
      */
-    private String instance_id;
+    private String instanceId;
     /**
      * 任务id
      */
-    private String task_id;
+    private String taskId;
     /**
      * 实例运行状态
      */
-    private String instance_status;
+    private String instanceStatus;
     /**
      * 实例创建时间
      */
-    private Date create_time;
+    private Date createTime;
     /**
      * 实例开始时间
      */
-    private Date start_time;
+    private Date startTime;
     /**
      * 实例结束时间
      */
-    private Date end_time;
+    private Date endTime;
 
-    public String getInstance_id() {
-        return instance_id;
+    public String getInstanceId() {
+        return instanceId;
     }
 
-    public void setInstance_id(String instance_id) {
-        this.instance_id = instance_id;
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
     }
 
-    public String getTask_id() {
-        return task_id;
+    public String getTaskId() {
+        return taskId;
     }
 
-    public void setTask_id(String task_id) {
-        this.task_id = task_id;
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
-    public String getInstance_status() {
-        return instance_status;
+    public String getInstanceStatus() {
+        return instanceStatus;
     }
 
-    public void setInstance_status(String instance_status) {
-        this.instance_status = instance_status;
+    public void setInstanceStatus(String instanceStatus) {
+        this.instanceStatus = instanceStatus;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getStart_time() {
-        return start_time;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(Date start_time) {
-        this.start_time = start_time;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getEnd_time() {
-        return end_time;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(Date end_time) {
-        this.end_time = end_time;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

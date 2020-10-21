@@ -8,22 +8,22 @@
   </select>
   <insert id="insertCollectTask" parameterType="com.wcc.wds.web.bean.CollectTaskBean">
     insert into sys_collect_config(id,task_name,regex,collect_time,task_type,collect_path,revolution,thread_num,task_status)
-    values (#{id},#{task_name},#{regex},#{collect_time},#{task_type},#{collect_path},#{revolution},#{thread_num},#{task_status})
+    values (#{id},#{taskName},#{regex},#{collectTime},#{taskType},#{collectPath},#{revolution},#{threadNum},#{taskStatus})
   </insert>
   <delete id="deleteCollectTask" parameterType="com.wcc.wds.web.bean.CollectTaskBean">
-    delete from sys_collect_config where task_name = #{task_name}
+    delete from sys_collect_config where task_name = #{taskName}
   </delete>
   <update id="updateTaskStatus" parameterType="com.wcc.wds.web.bean.CollectTaskBean">
-    update sys_collect_config set task_status = #{task_status} where task_name = #{task_name}
+    update sys_collect_config set task_status = #{taskStatus} where task_name = #{taskName}
   </update>
   <update id="updateRegex" parameterType="com.wcc.wds.web.bean.CollectTaskBean">
-    update sys_collect_config set regex = #{regex} where task_name = #{task_name}
+    update sys_collect_config set regex = #{regex} where task_name = #{taskName}
   </update>
   <update id="updateThreadNum" parameterType="com.wcc.wds.web.bean.CollectTaskBean">
-    update sys_collect_config set thread_num = #{thread_num} where task_name = #{task_name}
+    update sys_collect_config set thread_num = #{threadNum} where task_name = #{taskName}
   </update>
   <update id="updateCollectPath" parameterType="com.wcc.wds.web.bean.CollectTaskBean">
-    update sys_collect_config set collect_path = #{collect_path} where task_name = #{task_name}
+    update sys_collect_config set collect_path = #{collectPath} where task_name = #{taskName}
   </update>
 
 </mapper>

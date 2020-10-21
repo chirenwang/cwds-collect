@@ -9,11 +9,24 @@
 
   <insert id="insertCollectInstance" parameterType="com.wcc.wds.web.bean.CollectInstanceBean">
     insert into wds_collect_task(instance_id,task_id,instance_status,create_time)
-    values (#{instance_id},#{task_id},#{instance_status},#{create_time})
+    values (#{instanceId},#{taskId},#{instanceStatus},#{createTime})
   </insert>
 
   <update id="updateInstanceStatus" parameterType="com.wcc.wds.web.bean.CollectInstanceBean">
-    update wds_collect_task set instance_status = #{instance_status}
+    update wds_collect_task set instance_status = #{instanceStatus}
   </update>
+
+  <update id="updateEndTime">
+    update wds_collect_task set end_time = #{endTime}
+  </update>
+
+  <delete id="deleteInstance">
+    delete from wds_collect_task where instance_id = #{instanceId}
+  </delete>
+
+  <select id="selectFailTask" resultType="com.wcc.wds.web.bean.CollectInstanceBean">
+    select task_id from wds_collect_task where instance_status = 'failed'
+  </select>
+
 
 </mapper>

@@ -8,7 +8,7 @@ public class CollectTaskBean {
     /**
      * 任务名
      */
-    private String task_name;
+    private String taskName;
     /**
      * 任务id
      */
@@ -16,7 +16,7 @@ public class CollectTaskBean {
     /**
      * 采集路径
      */
-    private String collect_path;
+    private String collectPath;
     /**
      * 文件名正则
      */
@@ -24,15 +24,15 @@ public class CollectTaskBean {
     /**
      * 采集时间
      */
-    private String collect_time;
+    private String collectTime;
     /**
      * 任务类型
      */
-    private String task_type;
+    private String taskType;
     /**
      * 任务状态
      */
-    private String task_status;
+    private String taskStatus;
     /**
      * 周期
      */
@@ -40,14 +40,14 @@ public class CollectTaskBean {
     /**
      * 线程数
      */
-    private int thread_num;
+    private int threadNum;
 
-    public String getTask_name() {
-        return task_name;
+    public String getTaskName() {
+        return taskName;
     }
 
-    public void setTask_name(String task_name) {
-        this.task_name = task_name;
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     public String getId() {
@@ -58,12 +58,12 @@ public class CollectTaskBean {
         this.id = id;
     }
 
-    public String getCollect_path() {
-        return collect_path;
+    public String getCollectPath() {
+        return collectPath;
     }
 
-    public void setCollect_path(String collect_path) {
-        this.collect_path = collect_path;
+    public void setCollectPath(String collectPath) {
+        this.collectPath = collectPath;
     }
 
     public String getRegex() {
@@ -74,28 +74,28 @@ public class CollectTaskBean {
         this.regex = regex;
     }
 
-    public String getCollect_time() {
-        return collect_time;
+    public String getCollectTime() {
+        return collectTime;
     }
 
-    public void setCollect_time(String collect_time) {
-        this.collect_time = collect_time;
+    public void setCollectTime(String collectTime) {
+        this.collectTime = collectTime;
     }
 
-    public String getTask_type() {
-        return task_type;
+    public String getTaskType() {
+        return taskType;
     }
 
-    public void setTask_type(String task_type) {
-        this.task_type = task_type;
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
     }
 
-    public String getTask_status() {
-        return task_status;
+    public String getTaskStatus() {
+        return taskStatus;
     }
 
-    public void setTask_status(String task_status) {
-        this.task_status = task_status;
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
     }
 
     public int getRevolution() {
@@ -106,11 +106,11 @@ public class CollectTaskBean {
         this.revolution = revolution;
     }
 
-    public int getThread_num() {
-        return thread_num;
+    public int getThreadNum() {
+        return threadNum;
     }
 
-    public void setThread_num(int thread_num) {
-        this.thread_num = thread_num;
+    public void setThreadNum(int threadNum) {
+        this.threadNum = threadNum;
     }
 }

@@ -4,19 +4,19 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wcc.wds.web.dao.WithdrawContributionDao">
   <select id="selectWithdraw" resultType="com.wcc.wds.web.bean.WithdrawContributionBean">
-    select * from Blog
+    select * from tb_withdraw_contribution
   </select>
 
   <select id="selectWithdrawById" resultType="com.wcc.wds.web.bean.WithdrawContributionBean">
-    select * from Blog where id = #{id}
+    select * from tb_withdraw_contribution where id = #{id}
   </select>
 
   <insert id="insertWithdraw" parameterType="com.wcc.wds.web.bean.WithdrawContributionBean">
-    insert into Blog(id,withdraw_type,withdraw_file_path,file_path)
+    insert into tb_withdraw_contribution(id,withdraw_type,withdraw_file_path,file_path)
     values (#{id},#{withdraw_type},#{withdraw_file_path},#{file_path})
   </insert>
 
   <delete id="deleteWithdraw" parameterType="com.wcc.wds.web.bean.WithdrawContributionBean">
-    delete from Blog where id = #{id}
+    delete from tb_withdraw_contribution where id = #{id}
   </delete>
 </mapper>
