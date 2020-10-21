@@ -6,10 +6,6 @@ package com.wcc.wds.web.bean;
  */
 public class CollectTaskRequestBean {
     /**
-     * 任务类型
-     */
-    private String taskType;
-    /**
      * 操作类型
      */
     private String operate;
@@ -20,7 +16,15 @@ public class CollectTaskRequestBean {
     /**
      * 采集时间
      */
-    private String time;
+    private String collectTime;
+    /**
+     * 文件名正则
+     */
+    private String regex;
+    /**
+     * 周期
+     */
+    private int revolution;
     /**
      * 任务名
      */
@@ -29,15 +33,6 @@ public class CollectTaskRequestBean {
      * 线程数
      */
     private int threadNum;
-
-
-    public String getTaskType() {
-        return taskType;
-    }
-
-    public void setTaskType(String taskType) {
-        this.taskType = taskType;
-    }
 
     public String getOperate() {
         return operate;
@@ -55,14 +50,6 @@ public class CollectTaskRequestBean {
         this.collectPath = collectPath;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getTaskName() {
         return taskName;
     }
@@ -77,5 +64,29 @@ public class CollectTaskRequestBean {
 
     public void setThreadNum(int threadNum) {
         this.threadNum = threadNum;
+    }
+
+    public String getCollectTime() {
+        return collectTime;
+    }
+
+    public void setCollectTime(String collectTime) {
+        this.collectTime = collectTime;
+    }
+
+    public String getRegex() {
+        return regex;
+    }
+
+    public void setRegex(String regex) {
+        this.regex = regex;
+    }
+
+    public int getRevolution() {
+        return revolution;
+    }
+
+    public void setRevolution(int revolution) {
+        this.revolution = revolution;
     }
 }

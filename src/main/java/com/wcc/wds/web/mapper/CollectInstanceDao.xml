@@ -8,8 +8,8 @@
   </select>
 
   <insert id="insertCollectInstance" parameterType="com.wcc.wds.web.bean.CollectInstanceBean">
-    insert into wds_collect_task(instance_id,task_id,instance_status,create_time)
-    values (#{instanceId},#{taskId},#{instanceStatus},#{createTime})
+    insert into wds_collect_task(instance_id,task_id,instance_status,start_time)
+    values (#{instanceId},#{taskId},#{instanceStatus},#{startTime})
   </insert>
 
   <update id="updateInstanceStatus" parameterType="com.wcc.wds.web.bean.CollectInstanceBean">

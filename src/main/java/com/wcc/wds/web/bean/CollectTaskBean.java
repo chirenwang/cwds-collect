@@ -26,10 +26,6 @@ public class CollectTaskBean {
      */
     private String collectTime;
     /**
-     * 任务类型
-     */
-    private String taskType;
-    /**
      * 任务状态
      */
     private String taskStatus;
@@ -41,6 +37,10 @@ public class CollectTaskBean {
      * 线程数
      */
     private int threadNum;
+    /**
+     * 任务创建时间
+     */
+    private long createTime;
 
     public String getTaskName() {
         return taskName;
@@ -82,14 +82,6 @@ public class CollectTaskBean {
         this.collectTime = collectTime;
     }
 
-    public String getTaskType() {
-        return taskType;
-    }
-
-    public void setTaskType(String taskType) {
-        this.taskType = taskType;
-    }
-
     public String getTaskStatus() {
         return taskStatus;
     }
@@ -112,5 +104,13 @@ public class CollectTaskBean {
 
     public void setThreadNum(int threadNum) {
         this.threadNum = threadNum;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 }

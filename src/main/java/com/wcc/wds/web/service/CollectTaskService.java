@@ -1,10 +1,18 @@
 package com.wcc.wds.web.service;
 
+import com.sun.media.sound.RIFFInvalidFormatException;
+import com.wcc.wds.web.bean.CollectTaskBean;
 import com.wcc.wds.web.bean.CollectTaskRequestBean;
 import com.wcc.wds.web.bean.CollectTaskResponseBean;
+import com.wcc.wds.web.dao.CollectInstanceDao;
+import com.wcc.wds.web.dao.CollectTaskDao;
+import com.wcc.wds.web.dao.WithdrawContributionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * 采集任务服务
@@ -29,6 +37,22 @@ public class CollectTaskService {
      * 删除任务
      */
     private static final String DELETE = "delete";
+    /**
+     * 运行状态
+     */
+    private static final String RUNNING = "running";
+    /**
+     * 每天的分钟数
+     */
+    private static final int DAY_MINUTE = 1440;
+
+
+    @Autowired
+    private CollectTaskDao collectTaskDao;
+    @Autowired
+    private CollectInstanceDao collectInstanceDao;
+    @Autowired
+    private WithdrawContributionDao withdrawContributionDao;
 
 
     public CollectTaskResponseBean collectTask(CollectTaskRequestBean collectTaskRequestBean){
@@ -69,9 +93,35 @@ public class CollectTaskService {
 
 
     private void createTask(CollectTaskRequestBean collectTaskRequestBean, CollectTaskResponseBean collectTaskResponseBean){
+        CollectTaskBean collectTaskBean = new CollectTaskBean();
+        UUID uuid = UUID.randomUUID();
+        long createTime = System.currentTimeMillis();
+        collectTaskBean.setId(uuid.toString());
+        collectTaskBean.setCreateTime(createTime);
+        collectTaskBean.setCollectPath(collectTaskRequestBean.getCollectPath());
+        collectTaskBean.setCollectTime(collectTaskRequestBean.getCollectTime());
+        collectTaskBean.setRegex(collectTaskRequestBean.getRegex());
+        int revolution  = collectTaskRequestBean.getRevolution();
+        if (revolution == 0){ revolution = DAY_MINUTE;}
+        collectTaskBean.setRevolution(revolution);
+        collectTaskBean.setTaskName(collectTaskRequestBean.getTaskName());
+        collectTaskBean.setThreadNum(collectTaskRequestBean.getThreadNum());
+        collectTaskBean.setTaskStatus(RUNNING);
+
+        try{
+            collectTaskDao.insertCollectTask(collectTaskBean);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            collectTaskResponseBean.setRetCode(-1);
+            collectTaskResponseBean.setMessage(e.getMessage());
+        }
     }
 
-    private void modifyTask(CollectTaskRequestBean collectTaskRequestBean, CollectTaskResponseBean collectTaskResponseBean){}
+    private void modifyTask(CollectTaskRequestBean collectTaskRequestBean, CollectTaskResponseBean collectTaskResponseBean){
+        CollectTaskBean collectTaskBean = new CollectTaskBean();
+
+    }
 
     private void pauseTask(CollectTaskRequestBean collectTaskRequestBean, CollectTaskResponseBean collectTaskResponseBean){}
 
