@@ -23,10 +23,6 @@ public class CollectInstance {
      */
     private String instanceStatus;
     /**
-     * 实例创建时间
-     */
-    private Date createTime;
-    /**
      * 实例开始时间
      */
     private Date startTime;
@@ -34,5 +30,9 @@ public class CollectInstance {
      * 实例结束时间
      */
     private Date endTime;
+    /**
+     * 重试次数
+     */
+    private int retryTime;
 
 }

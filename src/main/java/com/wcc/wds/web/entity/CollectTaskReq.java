@@ -3,6 +3,8 @@ package com.wcc.wds.web.entity;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 采集任务接口请求参数
  */
@@ -11,6 +13,7 @@ public class CollectTaskReq {
     /**
      * 操作类型
      */
+    @NotNull(message = "操作类型不能为空")
     private String operate;
     /**
      * 采集路径
@@ -31,6 +34,7 @@ public class CollectTaskReq {
     /**
      * 任务名
      */
+    @NotNull(message = "任务名不能为空")
     private String taskName;
     /**
      * 线程数

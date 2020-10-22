@@ -32,4 +32,12 @@
     </set>
     where task_name = #{taskName}
   </update>
+
+  <select id="selectIdByStatus" resultType="java.lang.String">
+    select id from sys_collect_config where task_status = #{taskStatus}
+  </select>
+
+  <select id="selectById" resultType="com.wcc.wds.web.model.CollectTask">
+    select * from sys_collect_config where id = #{id}
+  </select>
 </mapper>

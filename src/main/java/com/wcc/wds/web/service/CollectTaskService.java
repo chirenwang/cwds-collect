@@ -3,15 +3,14 @@ package com.wcc.wds.web.service;
 import com.wcc.wds.web.model.CollectTask;
 import com.wcc.wds.web.entity.CollectTaskReq;
 import com.wcc.wds.web.entity.CollectTaskResp;
-import com.wcc.wds.web.dao.CollectInstanceDao;
 import com.wcc.wds.web.dao.CollectTaskDao;
-import com.wcc.wds.web.dao.WithdrawContributionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.UUID;
+import static com.wcc.wds.web.data.PublicData.*;
 
 /**
  * 采集任务服务
@@ -20,38 +19,8 @@ import java.util.UUID;
 public class CollectTaskService {
     private static final Logger logger = LoggerFactory.getLogger(CollectTaskService.class);
 
-    /**
-     * 创建任务
-     */
-    private static final String CREATE = "create";
-    /**
-     * 修改任务
-     */
-    private static final String MODIFY = "modify";
-    /**
-     * 暂停任务
-     */
-    private static final String PAUSE = "pause";
-    /**
-     * 删除任务
-     */
-    private static final String DELETE = "delete";
-    /**
-     * 运行状态
-     */
-    private static final String RUNNING = "running";
-    /**
-     * 每天的分钟数
-     */
-    private static final int DAY_MINUTE = 1440;
-
-
     @Autowired
     private CollectTaskDao collectTaskDao;
-    @Autowired
-    private CollectInstanceDao collectInstanceDao;
-    @Autowired
-    private WithdrawContributionDao withdrawContributionDao;
 
 
     public CollectTaskResp collectTask(CollectTaskReq collectTaskReq){
@@ -73,6 +42,8 @@ public class CollectTaskService {
                 case DELETE:
                     deleteTask(collectTaskReq, collectTaskResp);
                     break;
+                case SELECT:
+                    selectAllTask(collectTaskResp);
                 default:
                     //输入了未知的操作类型
                     logger.error("no such operate");
@@ -90,16 +61,24 @@ public class CollectTaskService {
 
     }
 
-
+    /**
+     * 创建任务
+     * @param collectTaskReq 请求参数
+     * @param collectTaskResp 返回参数
+     */
     private void createTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){
         CollectTask collectTask = new CollectTask();
+        //生成任务id
         UUID uuid = UUID.randomUUID();
+        //生成创建时间
         long createTime = System.currentTimeMillis();
+        //设置model对象
         collectTask.setId(uuid.toString());
         collectTask.setCreateTime(createTime);
         collectTask.setCollectPath(collectTaskReq.getCollectPath());
         collectTask.setCollectTime(collectTaskReq.getCollectTime());
         collectTask.setRegex(collectTaskReq.getRegex());
+        //如果没传周期默认为一天一次
         int revolution  = collectTaskReq.getRevolution();
         if (revolution == 0){ revolution = DAY_MINUTE;}
         collectTask.setRevolution(revolution);
@@ -110,19 +89,81 @@ public class CollectTaskService {
             collectTaskDao.insert(collectTask);
         }catch (Exception e){
             e.printStackTrace();
-            logger.error(e.getMessage());
+            logger.error("创建任务错误：" + e.getMessage());
             collectTaskResp.setRetCode(-1);
-            collectTaskResp.setMessage(e.getMessage());
+            collectTaskResp.setMessage("创建任务错误：" + e.getMessage());
         }
     }
 
+    /**
+     * 更改任务
+     * @param collectTaskReq
+     * @param collectTaskResp
+     */
     private void modifyTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){
         CollectTask collectTask = new CollectTask();
+        collectTask.setRegex(collectTaskReq.getRegex());
+        collectTask.setCollectPath(collectTask.getCollectPath());
+        collectTask.setThreadNum(collectTask.getThreadNum());
+        collectTask.setTaskName(collectTaskReq.getTaskName());
+        try {
+            collectTaskDao.updateNotNullByName(collectTask);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("更改任务错误: " + e.getMessage());
+            collectTaskResp.setRetCode(-1);
+            collectTaskResp.setMessage("更改任务错误: " + e.getMessage());
+        }
 
     }
 
-    private void pauseTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){}
+    /**
+     * 暂停任务
+     * @param collectTaskReq
+     * @param collectTaskResp
+     */
+    private void pauseTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){
+        CollectTask collectTask = new CollectTask();
+        collectTask.setTaskStatus(PAUSE);
+        collectTask.setTaskName(collectTaskReq.getTaskName());
+        try {
+            collectTaskDao.updateNotNullByName(collectTask);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("暂停任务错误：" + e.getMessage());
+            collectTaskResp.setRetCode(-1);
+            collectTaskResp.setMessage("暂停任务错误：" + e.getMessage());
+        }
+    }
 
-    private void deleteTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){}
+    /**
+     * 删除任务
+     * @param collectTaskReq
+     * @param collectTaskResp
+     */
+    private void deleteTask(CollectTaskReq collectTaskReq, CollectTaskResp collectTaskResp){
+        try {
+            collectTaskDao.deleteByName(collectTaskReq.getTaskName());
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("删除任务错误：" + e.getMessage());
+            collectTaskResp.setRetCode(-1);
+            collectTaskResp.setMessage("删除任务错误：" + e.getMessage());
+        }
+    }
+
+    private void selectAllTask(CollectTaskResp collectTaskResp){
+        try {
+            List<CollectTask> collectTaskList = collectTaskDao.selectAll();
+            collectTaskResp.setCollectTask(collectTaskList);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("查询所有任务错误：" + e.getMessage());
+            collectTaskResp.setRetCode(-1);
+            collectTaskResp.setMessage("查询所有任务错误：" + e.getMessage());
+        }
+    }
+
+
 
 }

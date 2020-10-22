@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
+
 /**
  * 接口类
  */
@@ -28,7 +30,7 @@ public class CwdsCollectController {
      * 采集任务接口
      */
     @RequestMapping(value = "/collectTask", method = RequestMethod.POST)
-    public CollectTaskResp collectTask(@RequestBody CollectTaskReq collectTaskReq){
+    public CollectTaskResp collectTask(@Valid @RequestBody CollectTaskReq collectTaskReq){
         return collectTaskService.collectTask(collectTaskReq);
     }
 
