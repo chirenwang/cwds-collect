@@ -43,7 +43,7 @@ public class CollectInstanceSchedule {
     /**
      * 每分钟扫一遍实例表运行实例
      */
-    @Scheduled(cron = "")
+    @Scheduled(cron = "0/1 * * * * *")
     private void runInstance(){
         try {
             //查询所有创建及重试的实例
@@ -73,7 +73,7 @@ public class CollectInstanceSchedule {
     /**
      * 每分钟检查一次正在运行的实例并更新数据库状态
      */
-    @Scheduled(cron = "")
+    @Scheduled(cron = "0/1 * * * * *")
     private void checkInstance(){
         try {
             //查询正在运行的实例的状态

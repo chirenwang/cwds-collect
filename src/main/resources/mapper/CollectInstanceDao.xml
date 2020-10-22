@@ -24,7 +24,7 @@
   </select>
 
   <select id="selectLatest" resultType="com.wcc.wds.web.model.CollectInstance">
-    select Max(start_time), FIRST_VALUE(task_id) from wds_collect_task
+    select Max(start_time), task_id from wds_collect_task
     </select>
 
   <update id="updateStatusById">
@@ -36,7 +36,7 @@
   </update>
 
   <select id="selectFail" resultType="com.wcc.wds.web.model.CollectInstance">
-    select * from wds_collect_task where instance_status = 'failed' and retry_time < 3
+    select * from wds_collect_task where instance_status = 'failed' and retry_time &lt; 3
   </select>
 
   <update id="updateRetryTimeById">

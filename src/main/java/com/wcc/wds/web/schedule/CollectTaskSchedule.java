@@ -39,6 +39,7 @@ public class CollectTaskSchedule {
             HashMap<String, Long> instanceMap = new HashMap<>(100);
             //将最新的实例写进map
             for (CollectInstance collectInstance: collectInstances){
+                if (collectInstance == null)continue;
                 instanceMap.put(collectInstance.getTaskId(), collectInstance.getStartTime().getTime());
             }
             for (String taskId : taskIds){
