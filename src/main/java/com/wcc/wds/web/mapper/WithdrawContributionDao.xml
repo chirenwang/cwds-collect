@@ -12,7 +12,7 @@
   </select>
 
   <insert id="insertWithdraw" parameterType="com.wcc.wds.web.bean.WithdrawContributionBean">
-    insert into tb_withdraw_contribution(id,withdraw_type,withdraw_file_path,file_path)
+    insert into tb_withdraw_contribution(id,withdraw_type,withdraw_path,file_path)
     values (#{id},#{withdraw_type},#{withdraw_file_path},#{file_path})
   </insert>
 
