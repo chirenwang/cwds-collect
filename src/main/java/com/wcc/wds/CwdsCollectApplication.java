@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@MapperScan("com.wcc.wds.web.dao")
+@MapperScan("com.wcc.wds.web.mapper")
 public class CwdsCollectApplication {
 
     public static void main(String[] args) {

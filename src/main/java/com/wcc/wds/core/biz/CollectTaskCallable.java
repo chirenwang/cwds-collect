@@ -4,6 +4,8 @@ import com.wcc.wds.web.entity.CollectResultEntity;
 import com.wcc.wds.web.model.CollectTaskModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -22,8 +24,11 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
 
     private final ConcurrentLinkedQueue<String> fileQueue = new ConcurrentLinkedQueue<>();
 
-    public CollectTaskCallable(CollectTaskModel collectTaskModel) {
+    private final List<String> withdrawFiles;
+
+    public CollectTaskCallable(CollectTaskModel collectTaskModel, List<String> withdrawFiles) {
         this.collectTaskModel = collectTaskModel;
+        this.withdrawFiles = withdrawFiles;
     }
 
 
@@ -49,7 +54,7 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
             //list任务大小
             int listSize = collectPaths.length;
             for (String collectPath : collectPaths){
-                listPool.submit(new ListRunnable(fileQueue, collectPath, regex, atomicInteger));
+                listPool.submit(new ListRunnable(fileQueue, collectPath, regex, atomicInteger, withdrawFiles));
             }
             //读文件任务线程池
             ExecutorService readPool = Executors.newFixedThreadPool(threadNum);

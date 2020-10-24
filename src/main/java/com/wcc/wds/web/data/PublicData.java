@@ -88,5 +88,13 @@ public class PublicData {
      * 翔宇撤稿
      */
     public static final String XY_WITHDREW = "xyWithdrew";
+    /**
+     * 撤稿文件内容
+     */
+    public static final String DELETED = "本网页已删除";
+    /**
+     * html body
+     */
+    public static final String BODY = "body";
     
 }
