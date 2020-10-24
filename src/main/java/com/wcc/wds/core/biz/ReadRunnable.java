@@ -1,6 +1,5 @@
 package com.wcc.wds.core.biz;
 
-import com.wcc.wds.core.biz.elasticsearch.ElasticsearchWriter;
 import com.wcc.wds.core.biz.elasticsearch.dao.ElasticsearchDao;
 import com.wcc.wds.web.entity.CollectResultEntity;
 import com.wcc.wds.web.entity.NodeNameEntity;
@@ -12,8 +11,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import java.net.URI;
 import java.util.ArrayList;
