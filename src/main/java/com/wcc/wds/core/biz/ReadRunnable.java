@@ -62,6 +62,8 @@ public class ReadRunnable implements Runnable {
                         String content = new String(bytes);
                         //使用jsoup解析
                         Document document = Jsoup.parse(content);
+                        //如果文件内容是撤稿内容，则跳过
+                        if (document.getElementsByTag(BODY).text().equals(DELETED)){ continue;}
                         //稿件id
                         String id = new Path(path).getName() + UUID.randomUUID().toString();
                         //标题

@@ -19,11 +19,13 @@ public class FileCollectTest {
     public static void main(String[] args) throws IOException, URISyntaxException {
         Configuration configuration = new Configuration();
         FileSystem fileSystem = FileSystem.get(URI.create("file:///"), configuration);
-        FSDataInputStream in = fileSystem.open(new Path("D:\\BaiduNetdiskDownload\\ctnews\\ctnews\\news\\2019-03\\21\\content_949558.html"));
+        FSDataInputStream in = fileSystem.open(new Path("C:\\Users\\60269\\Desktop\\content_1876543.htm"));
         byte[] bytes = new byte[in.available()];
         in.read(bytes);
         String content = new String(bytes);
         Document document = Jsoup.parse(content);
+        String body = document.getElementsByTag("body").text();
+        System.out.println(body);
         String title = document.getElementsByTag("title").text();
         String articleMain  = document.getElementsByClass("article-main").text();
         String editor = document.getElementsByClass("editor").text();

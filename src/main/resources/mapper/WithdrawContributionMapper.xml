@@ -19,4 +19,8 @@
   <delete id="deleteById">
     delete from tb_withdraw_contribution where id = #{id}
   </delete>
+
+  <select id="selectAllFilePath" resultType="java.lang.String">
+    select file_path from tb_withdraw_contribution
+  </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.wcc.wds.web.schedule;
 import com.wcc.wds.web.mapper.CollectInstanceMapper;
 import com.wcc.wds.web.mapper.CollectTaskMapper;
 import com.wcc.wds.web.entity.CollectResultEntity;
+import com.wcc.wds.web.mapper.WithdrawContributionMapper;
 import com.wcc.wds.web.model.CollectInstanceModel;
 import com.wcc.wds.web.model.CollectTaskModel;
 import com.wcc.wds.core.biz.CollectTaskCallable;
@@ -40,6 +41,8 @@ public class CollectInstanceSchedule {
     private CollectInstanceMapper collectInstanceMapper;
     @Autowired
     private CollectTaskMapper collectTaskMapper;
+    @Autowired
+    private WithdrawContributionMapper withdrawContributionMapper;
 
     /**
      * 每分钟扫一遍实例表运行实例
@@ -56,8 +59,9 @@ public class CollectInstanceSchedule {
                 if (!instanceMap.containsKey(instanceId)){
                     //获取实例对应的采集任务参数
                     CollectTaskModel collectTaskModel = collectTaskMapper.selectById(collectInstance.getTaskId());
+                    List<String> withdrawFiles = withdrawContributionMapper.selectAllFilePath();
                     //提交运行实例
-                    Future<CollectResultEntity> future = instancePool.submit(new CollectTaskCallable(collectTaskModel));
+                    Future<CollectResultEntity> future = instancePool.submit(new CollectTaskCallable(collectTaskModel, withdrawFiles));
                     //将future放入运行结果map
                     instanceMap.put(instanceId, future);
                     //将实例状态置为运行中

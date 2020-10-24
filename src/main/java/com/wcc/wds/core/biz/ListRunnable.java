@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -22,13 +23,15 @@ public class ListRunnable implements Runnable{
     private final String collectPath;
     private final String regex;
     private final AtomicInteger atomicInteger;
+    private final List<String> withdrawFiles;
 
 
-    public ListRunnable(ConcurrentLinkedQueue<String> fileQueue, String collectPath, String regex, AtomicInteger atomicInteger) {
+    public ListRunnable(ConcurrentLinkedQueue<String> fileQueue, String collectPath, String regex, AtomicInteger atomicInteger, List<String> withdrawFiles) {
         this.fileQueue = fileQueue;
         this.collectPath = collectPath;
         this.regex = regex;
         this.atomicInteger = atomicInteger;
+        this.withdrawFiles = withdrawFiles;
     }
 
 
@@ -61,6 +64,8 @@ public class ListRunnable implements Runnable{
         FileStatus[] fileStatuses = fileSystem.listStatus(new Path(collectPath));
         for (FileStatus fileStatus : fileStatuses){
             String path = fileStatus.getPath().toString();
+            //如果是已撤稿文件，则不采集
+            if (withdrawFiles.contains(path)){continue;}
             //如果是文件则将文件路径加入文件队列，若是目录则递归下一级
             if (!fileStatus.isDirectory()){
                 //获取文件名并匹配正则表达式
