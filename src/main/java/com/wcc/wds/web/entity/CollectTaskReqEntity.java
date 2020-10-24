@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  * 采集任务接口请求参数
  */
 @Data
-public class CollectTaskReq {
+public class CollectTaskReqEntity {
     /**
      * 操作类型
      */
@@ -40,5 +40,13 @@ public class CollectTaskReq {
      * 线程数
      */
     private int threadNum;
+    /**
+     * 域名Id
+     */
+    private String domainId;
+    /**
+     * 域名url
+     */
+    private String domainUrl;
 
 }

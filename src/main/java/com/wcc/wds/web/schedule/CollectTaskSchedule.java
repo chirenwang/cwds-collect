@@ -1,8 +1,8 @@
 package com.wcc.wds.web.schedule;
 
-import com.wcc.wds.web.dao.CollectInstanceDao;
-import com.wcc.wds.web.dao.CollectTaskDao;
-import com.wcc.wds.web.model.CollectInstance;
+import com.wcc.wds.web.mapper.CollectInstanceMapper;
+import com.wcc.wds.web.mapper.CollectTaskMapper;
+import com.wcc.wds.web.model.CollectInstanceModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ public class CollectTaskSchedule {
     private final static Logger logger = LoggerFactory.getLogger(CollectTaskSchedule.class);
 
     @Autowired
-    private CollectTaskDao collectTaskDao;
+    private CollectTaskMapper collectTaskMapper;
     @Autowired
-    private CollectInstanceDao collectInstanceDao;
+    private CollectInstanceMapper collectInstanceMapper;
 
     /**
      * 每5分钟扫一遍任务表创建实例
@@ -33,12 +33,12 @@ public class CollectTaskSchedule {
             //获取今天零点的时间戳
             long today = dayTimeInMillis();
             //找到所有running状态的任务
-            List<String> taskIds = collectTaskDao.selectIdByStatus(RUNNING);
+            List<String> taskIds = collectTaskMapper.selectIdByStatus(RUNNING);
             //找到开始时间最大的实例
-            List<CollectInstance> collectInstances = collectInstanceDao.selectLatest();
+            List<CollectInstanceModel> collectInstances = collectInstanceMapper.selectLatest();
             HashMap<String, Long> instanceMap = new HashMap<>(100);
             //将最新的实例写进map
-            for (CollectInstance collectInstance: collectInstances){
+            for (CollectInstanceModel collectInstance: collectInstances){
                 if (collectInstance == null)continue;
                 instanceMap.put(collectInstance.getTaskId(), collectInstance.getStartTime().getTime());
             }
@@ -46,14 +46,14 @@ public class CollectTaskSchedule {
                 //如果最新实例的任务id中包含运行任务的任务id，即说明是老任务，判断开始时间是否大于今天
                 if (instanceMap.containsKey(taskId)){
                     if (instanceMap.get(taskId) < today){
-                        CollectInstance newInstance = createNewInstance(taskId);
-                        collectInstanceDao.insert(newInstance);
+                        CollectInstanceModel newInstance = createNewInstance(taskId);
+                        collectInstanceMapper.insert(newInstance);
                         logger.info("创建实例：" + newInstance.getInstanceId() + "成功, 时间为：" + newInstance.getStartTime().toString() );
                     }
                     //如果最新实例的任务id中不包含运行任务的任务id，即说明是新任务直接创建新实例
                 }else {
-                    CollectInstance newInstance = createNewInstance(taskId);
-                    collectInstanceDao.insert(newInstance);
+                    CollectInstanceModel newInstance = createNewInstance(taskId);
+                    collectInstanceMapper.insert(newInstance);
                     logger.info("创建实例：" + newInstance.getInstanceId() + "成功, 时间为：" + newInstance.getStartTime().toString() );
                 }
             }
@@ -80,8 +80,8 @@ public class CollectTaskSchedule {
      * @param taskId
      * @return
      */
-    private CollectInstance createNewInstance(String taskId){
-        CollectInstance newInstance = new CollectInstance();
+    private CollectInstanceModel createNewInstance(String taskId){
+        CollectInstanceModel newInstance = new CollectInstanceModel();
         newInstance.setInstanceStatus(CREATED);
         newInstance.setInstanceId(UUID.randomUUID().toString());
         newInstance.setStartTime(new Date(System.currentTimeMillis()));

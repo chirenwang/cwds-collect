@@ -2,16 +2,16 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wcc.wds.web.dao.WithdrawContributionDao">
-  <select id="selectAll" resultType="com.wcc.wds.web.model.WithdrawContribution">
+<mapper namespace="com.wcc.wds.web.mapper.WithdrawContributionMapper">
+  <select id="selectAll" resultType="com.wcc.wds.web.model.WithdrawContributionModel">
     select * from tb_withdraw_contribution
   </select>
 
-  <select id="selectById" resultType="com.wcc.wds.web.model.WithdrawContribution">
+  <select id="selectById" resultType="com.wcc.wds.web.model.WithdrawContributionModel">
     select * from tb_withdraw_contribution where id = #{id}
   </select>
 
-  <insert id="insert" parameterType="com.wcc.wds.web.model.WithdrawContribution">
+  <insert id="insert" parameterType="com.wcc.wds.web.model.WithdrawContributionModel">
     insert into tb_withdraw_contribution(id,withdraw_type,withdraw_path,file_path)
     values (#{id},#{withdraw_type},#{withdraw_file_path},#{file_path})
   </insert>

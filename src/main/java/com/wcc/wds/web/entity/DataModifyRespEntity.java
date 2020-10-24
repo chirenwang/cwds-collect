@@ -6,7 +6,7 @@ import lombok.Data;
  * 数据撤稿与恢复接口返回参数
  */
 @Data
-public class DataModifyResp {
+public class DataModifyRespEntity {
     /**
      * 状态码
      */

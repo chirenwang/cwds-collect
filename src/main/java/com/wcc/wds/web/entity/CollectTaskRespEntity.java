@@ -1,6 +1,6 @@
 package com.wcc.wds.web.entity;
 
-import com.wcc.wds.web.model.CollectTask;
+import com.wcc.wds.web.model.CollectTaskModel;
 import lombok.Data;
 
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.List;
  * 采集任务接口返回参数
  */
 @Data
-public class CollectTaskResp {
+public class CollectTaskRespEntity {
 
 
-    public CollectTaskResp(int retCode, String message) {
+    public CollectTaskRespEntity(int retCode, String message) {
         this.retCode = retCode;
         this.message = message;
     }
@@ -28,6 +28,6 @@ public class CollectTaskResp {
     /**
      * 所有采集任务
      */
-    private List<CollectTask> collectTask;
+    private List<CollectTaskModel> collectTaskModel;
 
 }
