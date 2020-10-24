@@ -3,7 +3,7 @@ package com.wcc.wds.web.entity;
 import lombok.Data;
 
 @Data
-public class NodeNameEntity {
+public class NodeNameEntity extends BaseEntity{
 
     private int id;
 

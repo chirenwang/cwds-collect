@@ -2,7 +2,6 @@ package com.wcc.wds.web.mapper;
 
 import com.wcc.wds.web.model.CollectInstanceModel;
 import org.springframework.stereotype.Repository;
-
 import java.sql.Timestamp;
 import java.util.List;
 

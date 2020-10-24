@@ -29,7 +29,7 @@ public class CollectTaskSchedule {
     /**
      * 每5分钟扫一遍任务表创建每天实例
      */
-    @Scheduled(cron = "*/5 * * * *")
+    @Scheduled(cron = "0 0/5 * * * ?")
     private void createCollectInstance(){
         try {
             //获取今天零点的时间戳
@@ -70,7 +70,7 @@ public class CollectTaskSchedule {
     /**
      * 每3分钟扫一遍任务表创建手动运行实例
      */
-    @Scheduled(cron = "*/3 * * * *")
+    @Scheduled(cron = "0 0/3 * * * ?")
     private void createOnceCollectInstance(){
         try {
             //找到所有running状态的任务

@@ -3,7 +3,16 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wcc.wds.web.mapper.CollectInstanceMapper">
-  <select id="selectAll" resultType="com.wcc.wds.web.model.CollectInstanceModel">
+  <resultMap id="baseMap" type="com.wcc.wds.web.model.CollectInstanceModel">
+    <id property="instanceId" column="instance_id"/>
+    <result property="taskId" column="task_id"/>
+    <result property="instanceStatus" column="instance_status"/>
+    <result property="startTime" column="start_time"/>
+    <result property="endTime" column="end_time"/>
+  </resultMap>
+
+
+  <select id="selectAll" resultMap="baseMap">
     select * from wds_collect_task
   </select>
 
@@ -16,14 +25,14 @@
     delete from wds_collect_task where instance_id = #{instanceId}
   </delete>
 
-  <select id="selectByStatus" resultType="com.wcc.wds.web.model.CollectInstanceModel">
+  <select id="selectByStatus" resultMap="baseMap">
     select task_id from wds_collect_task where instance_status in
     <foreach collection="array" item="instanceStatus" index="index" open="(" close=")" separator=",">
         #{instanceStatus}
     </foreach>
   </select>
 
-  <select id="selectLatest" resultType="com.wcc.wds.web.model.CollectInstanceModel">
+  <select id="selectLatest" resultMap="baseMap">
     select Max(start_time), task_id from wds_collect_task group by task_id
     </select>
 
@@ -35,7 +44,7 @@
     update wds_collect_task set end_time = #{param2} where instance_id = #{param1}
   </update>
 
-  <select id="selectFail" resultType="com.wcc.wds.web.model.CollectInstanceModel">
+  <select id="selectFail" resultMap="baseMap">
     select * from wds_collect_task where instance_status = 'failed' and retry_time &lt; 3
   </select>
 

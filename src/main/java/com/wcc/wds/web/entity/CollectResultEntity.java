@@ -3,7 +3,7 @@ package com.wcc.wds.web.entity;
 import lombok.Data;
 
 @Data
-public class CollectResultEntity {
+public class CollectResultEntity extends BaseEntity {
 
     private int ret;
 

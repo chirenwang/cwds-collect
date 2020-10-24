@@ -1,7 +1,6 @@
 package com.wcc.wds.web.controller;
 
 import com.wcc.wds.web.entity.CollectTaskReqEntity;
-import com.wcc.wds.web.entity.DataModifyRespEntity;
 import com.wcc.wds.web.model.CollectTaskModel;
 import com.wcc.wds.web.response.Response;
 import com.wcc.wds.web.response.ResponseEnum;
@@ -21,7 +20,7 @@ import java.util.List;
  * 接口类
  */
 @Controller
-public class CwdsCollectController {
+public class CwdsCollectController extends BaseController {
 
     @Autowired
     private CollectTaskService collectTaskService;
@@ -41,13 +40,6 @@ public class CwdsCollectController {
         }
     }
 
-    /**
-     * 数据撤稿及恢复接口
-     */
-    @RequestMapping(value = "/dataModify", method = RequestMethod.POST)
-    public DataModifyRespEntity dataModify() {
-        return new DataModifyRespEntity();
-    }
 
     /**
      * 查询接口

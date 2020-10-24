@@ -11,12 +11,9 @@ import com.wcc.wds.core.biz.CollectTaskCallable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,7 +51,7 @@ public class CollectInstanceSchedule {
     /**
      * 每5分钟扫一遍实例表运行实例
      */
-    @Scheduled(cron = "*/5 * * * *")
+    @Scheduled(cron = "0 0/5 * * * ?")
     private void runInstance(){
         try {
             //查询所有创建及重试的实例
@@ -88,7 +85,7 @@ public class CollectInstanceSchedule {
     /**
      * 每5分钟检查一次正在运行的实例并更新数据库状态
      */
-    @Scheduled(cron = "*/5 * * * *")
+    @Scheduled(cron = "0 0/5 * * * ?")
     private void checkInstance(){
         try {
             //查询正在运行的实例的状态

@@ -27,10 +27,6 @@ public class CollectTaskModel {
      */
     private String regex;
     /**
-     * 采集时间
-     */
-    private String collectTime;
-    /**
      * 任务状态
      */
     private String taskStatus;

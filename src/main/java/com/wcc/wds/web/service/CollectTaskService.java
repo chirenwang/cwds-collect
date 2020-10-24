@@ -65,7 +65,6 @@ public class CollectTaskService {
         collectTaskModel.setId(uuid.toString());
         collectTaskModel.setCreateTime(new Timestamp(System.currentTimeMillis()));
         collectTaskModel.setCollectPath(collectTaskReqEntity.getCollectPath());
-        collectTaskModel.setCollectTime(collectTaskReqEntity.getCollectTime());
         collectTaskModel.setRegex(collectTaskReqEntity.getRegex());
         collectTaskModel.setTaskName(collectTaskReqEntity.getTaskName());
         collectTaskModel.setThreadNum(collectTaskReqEntity.getThreadNum());

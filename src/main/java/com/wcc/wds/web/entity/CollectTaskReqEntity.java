@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  * 采集任务接口请求参数
  */
 @Data
-public class CollectTaskReqEntity {
+public class CollectTaskReqEntity extends BaseEntity{
     /**
      * 操作类型
      */
@@ -20,17 +20,13 @@ public class CollectTaskReqEntity {
      */
     private String collectPath;
     /**
-     * 采集时间
-     */
-    private String collectTime;
-    /**
      * 文件名正则
      */
     private String regex;
     /**
-     * 周期
+     * 任务类型
      */
-    private int revolution;
+    private String taskType;
     /**
      * 任务名
      */
