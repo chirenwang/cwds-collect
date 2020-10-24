@@ -1,6 +1,7 @@
 package com.wcc.wds.core.biz;
 
 import com.wcc.wds.core.biz.elasticsearch.ElasticsearchWriter;
+import com.wcc.wds.core.biz.elasticsearch.dao.ElasticsearchDao;
 import com.wcc.wds.web.entity.CollectResultEntity;
 import com.wcc.wds.web.entity.NodeNameEntity;
 import com.wcc.wds.web.model.ElasticsearchModel;
@@ -32,14 +33,16 @@ public class ReadRunnable implements Runnable {
     private final CollectResultEntity collectResultEntity;
     private final String domainUrl;
     private final String domainId;
+    private final ElasticsearchDao elasticsearchDao;
 
-    public ReadRunnable(ConcurrentLinkedQueue<String> fileQueue, AtomicInteger atomicInteger, int listSize, CollectResultEntity collectResultEntity, String domainUrl, String domainId) {
+    public ReadRunnable(ConcurrentLinkedQueue<String> fileQueue, AtomicInteger atomicInteger, int listSize, CollectResultEntity collectResultEntity, String domainUrl, String domainId, ElasticsearchDao elasticsearchDao) {
         this.fileQueue = fileQueue;
         this.atomicInteger = atomicInteger;
         this.listSize = listSize;
         this.collectResultEntity = collectResultEntity;
         this.domainUrl = domainUrl;
         this.domainId = domainId;
+        this.elasticsearchDao = elasticsearchDao;
     }
 
 
@@ -88,8 +91,7 @@ public class ReadRunnable implements Runnable {
                         String url = domainUrl + path;
                         //构建es对象
                         ElasticsearchModel elasticsearchModel = new ElasticsearchModel(title, id, articleMain, collectTime, source, editor, url, path, PUBLISHED, nodeNames, publishTime, domainId);
-
-
+                        elasticsearchDao.addDocumentToBulkProcessor(elasticsearchModel);
                     }catch (Exception e){
                         String message = e.getMessage();
                         logger.error("read file :" + path + "failed :" +e.getMessage());

@@ -1,5 +1,6 @@
 package com.wcc.wds.core.biz;
 
+import com.wcc.wds.core.biz.elasticsearch.dao.ElasticsearchDao;
 import com.wcc.wds.web.entity.CollectResultEntity;
 import com.wcc.wds.web.model.CollectTaskModel;
 import org.slf4j.Logger;
@@ -26,9 +27,12 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
 
     private final List<String> withdrawFiles;
 
-    public CollectTaskCallable(CollectTaskModel collectTaskModel, List<String> withdrawFiles) {
+    private final ElasticsearchDao elasticsearchDao;
+
+    public CollectTaskCallable(CollectTaskModel collectTaskModel, List<String> withdrawFiles, ElasticsearchDao elasticsearchDao) {
         this.collectTaskModel = collectTaskModel;
         this.withdrawFiles = withdrawFiles;
+        this.elasticsearchDao = elasticsearchDao;
     }
 
 
@@ -60,7 +64,7 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
             ExecutorService readPool = Executors.newFixedThreadPool(threadNum);
             //读文件任务
             for(int i = 0; i < threadNum; i++){
-                readPool.submit(new ReadRunnable(fileQueue, atomicInteger, listSize, collectResultEntity, domainId, domainUrl));
+                readPool.submit(new ReadRunnable(fileQueue, atomicInteger, listSize, collectResultEntity, domainId, domainUrl, elasticsearchDao));
             }
         }catch (Exception e){
             String message = e.getMessage();

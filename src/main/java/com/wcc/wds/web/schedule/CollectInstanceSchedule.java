@@ -1,5 +1,6 @@
 package com.wcc.wds.web.schedule;
 
+import com.wcc.wds.core.biz.elasticsearch.dao.ElasticsearchDao;
 import com.wcc.wds.web.mapper.CollectInstanceMapper;
 import com.wcc.wds.web.mapper.CollectTaskMapper;
 import com.wcc.wds.web.entity.CollectResultEntity;
@@ -43,6 +44,8 @@ public class CollectInstanceSchedule {
     private CollectTaskMapper collectTaskMapper;
     @Autowired
     private WithdrawContributionMapper withdrawContributionMapper;
+    @Autowired
+    private ElasticsearchDao elasticsearchDao;
 
     /**
      * 每分钟扫一遍实例表运行实例
@@ -61,7 +64,7 @@ public class CollectInstanceSchedule {
                     CollectTaskModel collectTaskModel = collectTaskMapper.selectById(collectInstance.getTaskId());
                     List<String> withdrawFiles = withdrawContributionMapper.selectAllFilePath();
                     //提交运行实例
-                    Future<CollectResultEntity> future = instancePool.submit(new CollectTaskCallable(collectTaskModel, withdrawFiles));
+                    Future<CollectResultEntity> future = instancePool.submit(new CollectTaskCallable(collectTaskModel, withdrawFiles, elasticsearchDao));
                     //将future放入运行结果map
                     instanceMap.put(instanceId, future);
                     //将实例状态置为运行中
@@ -90,11 +93,21 @@ public class CollectInstanceSchedule {
                     if (future.isDone()){
                         //获取实例运行结果
                         CollectResultEntity collectResult = future.get();
-                        //将实例状态置为成功
-                        collectInstanceMapper.updateStatusById(instanceId, SUCCESS);
-                        //从实例结果map中删除实例
-                        instanceMap.remove(instanceId);
-                        logger.info("实例：" + instanceId + " 运行成功");
+                        //若返回不为0，则说明实例失败
+                        if (collectResult.getRet() != 0){
+                            String message = collectResult.getMessage();
+                            //将实例状态置为失败
+                            collectInstanceMapper.updateStatusById(instanceId, FAILED);
+                            //从实例结果map中删除实例
+                            instanceMap.remove(instanceId);
+                            logger.error("实例：" + instanceId + " 运行失败：" + message);
+                        }else {
+                            //将实例状态置为成功
+                            collectInstanceMapper.updateStatusById(instanceId, SUCCESS);
+                            //从实例结果map中删除实例
+                            instanceMap.remove(instanceId);
+                            logger.info("实例：" + instanceId + " 运行成功");
+                        }
                     }
                     //若有异常证明实例运行失败
                 }catch (Exception e){
