@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wcc.wds.web.dao.CollectTaskDao">
-  <select id="selectAll" resultType="com.wcc.wds.web.model.CollectTask">
+<mapper namespace="com.wcc.wds.web.mapper.CollectTaskMapper">
+  <select id="selectAll" resultType="com.wcc.wds.web.model.CollectTaskModel">
     select * from sys_collect_config
   </select>
-  <insert id="insert" parameterType="com.wcc.wds.web.model.CollectTask">
+  <insert id="insert" parameterType="com.wcc.wds.web.model.CollectTaskModel">
     insert into sys_collect_config(id,task_name,regex,collect_time,collect_path,revolution,thread_num,task_status)
     values (#{id},#{taskName},#{regex},#{collectTime},#{collectPath},#{revolution},#{threadNum},#{taskStatus})
   </insert>
@@ -29,6 +29,12 @@
       <if test="threadNum != null">
         thread_num = #{threadNum},
       </if>
+      <if test="domainId != null">
+        domain_id = #{domainId},
+      </if>
+      <if test="domainUrl != null">
+        domain_url = #{domainUrl},
+      </if>
     </set>
     where task_name = #{taskName}
   </update>
@@ -37,7 +43,7 @@
     select id from sys_collect_config where task_status = #{taskStatus}
   </select>
 
-  <select id="selectById" resultType="com.wcc.wds.web.model.CollectTask">
+  <select id="selectById" resultType="com.wcc.wds.web.model.CollectTaskModel">
     select * from sys_collect_config where id = #{id}
   </select>
 </mapper>

@@ -6,7 +6,7 @@ import lombok.Data;
  * 撤稿状态表Dao
  */
 @Data
-public class WithdrawContribution {
+public class WithdrawContributionModel {
     /**
      * 稿件id
      */

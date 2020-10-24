@@ -11,7 +11,7 @@ package com.wcc.wds.web.dao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.wcc.wds.web.model.WithdrawContribution;
+import com.wcc.wds.web.model.WithdrawContributionModel;
 
 public class WithdrawContributionDaoTest extends BaseDaoTest {
 
@@ -20,7 +20,7 @@ public class WithdrawContributionDaoTest extends BaseDaoTest {
 
     @Test
     public void test() {
-        WithdrawContribution wcb = new WithdrawContribution();
+        WithdrawContributionModel wcb = new WithdrawContributionModel();
 
         wcb.setId("3");
         wcb.setWithdraw_file_path("asd");

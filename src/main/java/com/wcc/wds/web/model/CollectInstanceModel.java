@@ -9,7 +9,7 @@ import java.util.Date;
  * 采集任务实例表Dao
  */
 @Data
-public class CollectInstance {
+public class CollectInstanceModel {
     /**
      * 实例id
      */

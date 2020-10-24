@@ -1,0 +1,104 @@
+package com.wcc.wds.core.biz;
+
+import com.wcc.wds.core.biz.elasticsearch.ElasticsearchWriter;
+import com.wcc.wds.web.entity.CollectResultEntity;
+import com.wcc.wds.web.entity.NodeNameEntity;
+import com.wcc.wds.web.model.ElasticsearchModel;
+import lombok.SneakyThrows;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+import static com.wcc.wds.web.data.PublicData.*;
+
+public class ReadRunnable implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReadRunnable.class);
+
+    private final ConcurrentLinkedQueue<String> fileQueue;
+    private final AtomicInteger atomicInteger;
+    private final int listSize;
+    private final CollectResultEntity collectResultEntity;
+    private final String domainUrl;
+    private final String domainId;
+
+    public ReadRunnable(ConcurrentLinkedQueue<String> fileQueue, AtomicInteger atomicInteger, int listSize, CollectResultEntity collectResultEntity, String domainUrl, String domainId) {
+        this.fileQueue = fileQueue;
+        this.atomicInteger = atomicInteger;
+        this.listSize = listSize;
+        this.collectResultEntity = collectResultEntity;
+        this.domainUrl = domainUrl;
+        this.domainId = domainId;
+    }
+
+
+    @SneakyThrows
+    @Override
+    public void run() {
+        try {
+            //构建本地文件系统
+            FileSystem fileSystem = FileSystem.get(URI.create(FILE_SCHEMA), new Configuration());
+            Date collectTime = new Date(System.currentTimeMillis());
+            //当文件队列为空或者list任务已经运行完时，结束循环
+            while (!fileQueue.isEmpty() || atomicInteger.get() != listSize) {
+                String path = fileQueue.poll();
+                if (!StringUtils.isEmpty(path)) {
+                    try {
+                        //读取文件
+                        FSDataInputStream in = fileSystem.open(new Path(path));
+                        byte[] bytes = new byte[in.available()];
+                        in.read(bytes);
+                        String content = new String(bytes);
+                        //使用jsoup解析
+                        Document document = Jsoup.parse(content);
+                        //稿件id
+                        String id = new Path(path).getName() + UUID.randomUUID().toString();
+                        //标题
+                        String title = document.getElementsByTag(TITLE).text();
+                        //正文
+                        String articleMain  = document.getElementsByClass(ARTICLE_MAIN).text();
+                        //编辑
+                        String editor = document.getElementsByClass(EDITOR).text();
+                        //发布时间
+                        String publishTime = document.getElementsByClass(PUBLISH_TIME).text();
+                        //栏目结构
+                        String[] positionInners = document.getElementsByClass(POSITION_INNER).text().split(">");
+                        ArrayList<NodeNameEntity> nodeNames = new ArrayList<>(5);
+                        int i = 1;
+                        for (String nodeName : positionInners){
+                            nodeNames.add(new NodeNameEntity(i, nodeName));
+                            i++;
+                        }
+                        //来源
+                        String source = document.getElementsByClass(SOURCE).text();
+                        //url
+                        String url = domainUrl + path;
+                        //构建es对象
+                        ElasticsearchModel elasticsearchModel = new ElasticsearchModel(title, id, articleMain, collectTime, source, editor, url, path, PUBLISHED, nodeNames, publishTime, domainId);
+
+
+                    }catch (Exception e){
+                        String message = e.getMessage();
+                        logger.error("read file :" + path + "failed :" +e.getMessage());
+                        collectResultEntity.setRet(-1);
+                        collectResultEntity.setMessage(message);
+                    }
+                }
+            }
+        }catch (Exception e){
+            logger.error("read file failed：" + e.getMessage());
+            throw e;
+        }
+    }
+}

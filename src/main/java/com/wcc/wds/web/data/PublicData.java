@@ -48,5 +48,45 @@ public class PublicData {
      * 每天的分钟数
      */
     public static final int DAY_MINUTE = 1440;
+    /**
+     * 文件系统头
+     */
+    public static final String FILE_SCHEMA = "file:///";
+    /**
+     * 标题
+     */
+    public static final String TITLE = "title";
+    /**
+     * 正文
+     */
+    public static final String ARTICLE_MAIN = "article-main";
+    /**
+     * 负责编辑
+     */
+    public static final String EDITOR = "editor";
+    /**
+     * 发布时间
+     */
+    public static final String PUBLISH_TIME = "publish-time";
+    /**
+     * 栏目结构
+     */
+    public static final String POSITION_INNER = "position-inner";
+    /**
+     * 来源
+     */
+    public static final String SOURCE = "source";
+    /**
+     * 发布中
+     */
+    public static final String PUBLISHED = "published";
+    /**
+     * 撤稿中
+     */
+    public static final String WITHDREW = "withdrew";
+    /**
+     * 翔宇撤稿
+     */
+    public static final String XY_WITHDREW = "xyWithdrew";
     
 }

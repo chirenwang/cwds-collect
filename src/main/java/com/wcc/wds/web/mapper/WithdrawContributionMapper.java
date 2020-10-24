@@ -1,20 +1,18 @@
-package com.wcc.wds.web.dao;
+package com.wcc.wds.web.mapper;
 
 import com.wcc.wds.web.model.WithdrawContributionModel;
-
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WithdrawContributionDao {
+public interface WithdrawContributionMapper {
 
-    List<WithdrawContributionModel> selectAll();
+    WithdrawContributionModel selectAll();
 
     WithdrawContributionModel selectById(String id);
 
-    void insert(WithdrawContributionModel withdrawContribution);
+    void insert(WithdrawContributionModel withdrawContributionModel);
 
     void deleteById(String id);
+
 
 }

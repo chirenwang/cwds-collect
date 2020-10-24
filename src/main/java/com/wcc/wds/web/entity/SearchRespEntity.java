@@ -3,7 +3,7 @@ package com.wcc.wds.web.entity;
 import lombok.Data;
 
 @Data
-public class SearchResp {
+public class SearchRespEntity {
 
     private int retCode;
 

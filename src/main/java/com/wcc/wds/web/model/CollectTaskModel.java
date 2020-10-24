@@ -7,7 +7,7 @@ import lombok.Data;
  * 采集任务表Dao
  */
 @Data
-public class CollectTask {
+public class CollectTaskModel {
     /**
      * 任务名
      */
@@ -44,5 +44,13 @@ public class CollectTask {
      * 任务创建时间
      */
     private long createTime;
+    /**
+     * 域名id
+     */
+    private String domainId;
+    /**
+     * 域名url
+     */
+    private String domainUrl;
 
 }

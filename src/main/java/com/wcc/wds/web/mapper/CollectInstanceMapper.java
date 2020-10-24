@@ -1,18 +1,18 @@
-package com.wcc.wds.web.dao;
+package com.wcc.wds.web.mapper;
 
-import com.wcc.wds.web.model.CollectInstance;
+import com.wcc.wds.web.model.CollectInstanceModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface CollectInstanceDao {
+public interface CollectInstanceMapper {
     /**
      * 创建采集任务实例
      * @param collectInstance
      */
-    void insert(CollectInstance collectInstance);
+    void insert(CollectInstanceModel collectInstance);
 
     /**
      * 删除实例
@@ -24,20 +24,20 @@ public interface CollectInstanceDao {
      * 查询所有实例
      * @return
      */
-    List<CollectInstance> selectAll();
+    List<CollectInstanceModel> selectAll();
 
     /**
      * 根据状态查实例
      * @return
      */
-    List<CollectInstance> selectByStatus(String[] instanceStatus);
+    List<CollectInstanceModel> selectByStatus(String[] instanceStatus);
 
 
     /**
      * 查询失败实例
      * @return
      */
-    List<CollectInstance> selectFail();
+    List<CollectInstanceModel> selectFail();
 
     /**
      * 更新重试次数
@@ -66,7 +66,7 @@ public interface CollectInstanceDao {
      * 查找最新的实例
      * @return
      */
-    List<CollectInstance> selectLatest();
+    List<CollectInstanceModel> selectLatest();
 
 
 

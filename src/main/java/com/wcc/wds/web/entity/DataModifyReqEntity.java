@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * 数据撤稿与恢复接口请求参数
  */
 @Data
-public class DataModifyReq {
+public class DataModifyReqEntity {
 
     /**
      * 操作
