@@ -1,25 +1,23 @@
 package com.wcc.wds.web.dao;
 
-import com.wcc.wds.web.bean.CollectTaskBean;
+import com.wcc.wds.web.model.CollectTask;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CollectTaskDao {
 
-     CollectTaskBean selectCollectTask();
+     List<CollectTask> selectAll();
 
-     void insertCollectTask(CollectTaskBean collectTaskBean);
+     CollectTask selectById(String id);
 
-     void deleteCollectTask(CollectTaskBean collectTaskBean);
+     List<String> selectIdByStatus(String taskStatus);
 
-     void updateTaskStatus(CollectTaskBean collectTaskBean);
+     void insert(CollectTask collectTask);
 
-     void updateRegex(CollectTaskBean collectTaskBean);
+     void deleteByName(String taskName);
 
-     void updateThreadNum(CollectTaskBean collectTaskBean);
-
-     void updateCollectPath(CollectTaskBean collectTaskBean);
-
-
+     void updateNotNullByName(CollectTask collectTask);
 
 }
