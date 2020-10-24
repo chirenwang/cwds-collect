@@ -7,8 +7,8 @@
     select * from sys_collect_config
   </select>
   <insert id="insert" parameterType="com.wcc.wds.web.model.CollectTaskModel">
-    insert into sys_collect_config(id,task_name,regex,collect_time,collect_path,revolution,thread_num,task_status)
-    values (#{id},#{taskName},#{regex},#{collectTime},#{collectPath},#{revolution},#{threadNum},#{taskStatus})
+    insert into sys_collect_config(id,task_name,regex,collect_time,collect_path,task_type,thread_num,task_status)
+    values (#{id},#{taskName},#{regex},#{collectTime},#{collectPath},#{taskType},#{threadNum},#{taskStatus})
   </insert>
   <delete id="deleteByName">
     delete from sys_collect_config where task_name = #{taskName}
@@ -40,10 +40,18 @@
   </update>
 
   <select id="selectIdByStatus" resultType="java.lang.String">
-    select id from sys_collect_config where task_status = #{taskStatus}
+    select id from sys_collect_config where task_status = #{taskStatus} and task_type = 'day'
   </select>
 
   <select id="selectById" resultType="com.wcc.wds.web.model.CollectTaskModel">
     select * from sys_collect_config where id = #{id}
   </select>
+
+  <select id="selectOnceIdByStatus" resultType="java.lang.String">
+    select id from sys_collect_config where task_status = #{taskStatus} and task_type = 'once'
+  </select>
+
+  <update id="updateStatusById">
+    update sys_collect_config set task_status = #{param2} where id = #{param1}
+  </update>
 </mapper>

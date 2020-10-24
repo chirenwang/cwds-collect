@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.sql.Timestamp;
 import java.util.*;
 import static com.wcc.wds.web.data.PublicData.*;
@@ -26,10 +25,11 @@ public class CollectTaskSchedule {
     @Autowired
     private CollectInstanceMapper collectInstanceMapper;
 
+
     /**
-     * 每5分钟扫一遍任务表创建实例
+     * 每5分钟扫一遍任务表创建每天实例
      */
-    @Scheduled(cron = "0/1 * * * * *")
+    @Scheduled(cron = "*/5 * * * *")
     private void createCollectInstance(){
         try {
             //获取今天零点的时间戳
@@ -58,6 +58,28 @@ public class CollectTaskSchedule {
                     collectInstanceMapper.insert(newInstance);
                     logger.info("创建实例：" + newInstance.getInstanceId() + "成功, 时间为：" + newInstance.getStartTime().toString() );
                 }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("创建实例错误：" + e.getMessage());
+        }
+
+    }
+
+
+    /**
+     * 每3分钟扫一遍任务表创建手动运行实例
+     */
+    @Scheduled(cron = "*/3 * * * *")
+    private void createOnceCollectInstance(){
+        try {
+            //找到所有running状态的任务
+            List<String> taskIds = collectTaskMapper.selectOnceIdByStatus(RUNNING);
+            for (String taskId : taskIds){
+                CollectInstanceModel newInstance = createNewInstance(taskId);
+                collectInstanceMapper.insert(newInstance);
+                logger.info("创建实例：" + newInstance.getInstanceId() + "成功, 时间为：" + newInstance.getStartTime().toString() );
+                collectTaskMapper.updateStatusById(taskId, SUCCESS);
             }
         }catch (Exception e){
             e.printStackTrace();

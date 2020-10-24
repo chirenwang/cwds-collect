@@ -3,6 +3,8 @@ package com.wcc.wds.web.model;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 /**
  * 采集任务表Dao
  */
@@ -33,9 +35,9 @@ public class CollectTaskModel {
      */
     private String taskStatus;
     /**
-     * 周期
+     * 任务类型
      */
-    private int revolution;
+    private String taskType;
     /**
      * 线程数
      */
@@ -43,7 +45,7 @@ public class CollectTaskModel {
     /**
      * 任务创建时间
      */
-    private long createTime;
+    private Timestamp createTime;
     /**
      * 域名id
      */
