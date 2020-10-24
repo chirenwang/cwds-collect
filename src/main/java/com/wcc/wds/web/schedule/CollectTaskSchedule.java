@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
 import java.util.*;
 import static com.wcc.wds.web.data.PublicData.*;
 
@@ -84,7 +86,7 @@ public class CollectTaskSchedule {
         CollectInstanceModel newInstance = new CollectInstanceModel();
         newInstance.setInstanceStatus(CREATED);
         newInstance.setInstanceId(UUID.randomUUID().toString());
-        newInstance.setStartTime(new Date(System.currentTimeMillis()));
+        newInstance.setStartTime(new Timestamp(System.currentTimeMillis()));
         newInstance.setTaskId(taskId);
         return newInstance;
     }

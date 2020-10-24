@@ -7,18 +7,27 @@ import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.WrapperQueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Component
 public class ElasticsearchDao {
@@ -28,6 +37,8 @@ public class ElasticsearchDao {
     private BulkProcessor bulkProcessor;
     @Autowired
     private RestHighLevelClient client;
+    @Value("${elasticsearch.index}")
+    private String esIndex;
 
     @PostConstruct
     public void initBulkProcessor() {
@@ -51,8 +62,8 @@ public class ElasticsearchDao {
                 (request, bulkListener) ->
                         client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener),
                 listener);
-        builder.setBulkActions(500);
-        builder.setBulkSize(new ByteSizeValue(1L, ByteSizeUnit.MB));
+        builder.setBulkActions(100);
+        builder.setBulkSize(new ByteSizeValue(10L, ByteSizeUnit.MB));
         builder.setConcurrentRequests(0);
         builder.setFlushInterval(TimeValue.timeValueSeconds(10L));
         builder.setBackoffPolicy(BackoffPolicy
@@ -75,6 +86,32 @@ public class ElasticsearchDao {
 
     public void addDocumentToBulkProcessor(ElasticsearchModel elasticsearchModel) {
         bulkProcessor.add(new IndexRequest("posts").id(elasticsearchModel.getId()).source(XContentType.JSON, JSON.toJSONString(elasticsearchModel)));
+    }
+
+    /**
+     * 根据querString查询es
+     * @param queryString 查询字符串
+     * @return
+     */
+    public ArrayList<String> search(String queryString) throws IOException {
+        ArrayList<String> searchResult = new ArrayList<>(2000);
+        try {
+            WrapperQueryBuilder wrapperQueryBuilder = QueryBuilders.wrapperQuery(queryString);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            searchSourceBuilder.query(wrapperQueryBuilder);
+            SearchRequest request = new SearchRequest(esIndex);
+            request.source(searchSourceBuilder);
+            SearchResponse searchResponse = client.search(request, RequestOptions.DEFAULT);
+            SearchHit[] results = searchResponse.getHits().getHits();
+            for(SearchHit hit : results){
+                String sourceAsString = hit.getSourceAsString();
+                searchResult.add(sourceAsString);
+            }
+            return searchResult;
+        }catch (Exception e){
+            logger.error("查询错误：" +  e.getMessage());
+            throw e;
+        }
     }
 
 

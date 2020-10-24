@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -60,11 +63,14 @@ public class CollectInstanceSchedule {
                 String instanceId = collectInstance.getInstanceId();
                 //确保线程池中没有重复实例
                 if (!instanceMap.containsKey(instanceId)){
+                    String taskId = collectInstance.getTaskId();
                     //获取实例对应的采集任务参数
                     CollectTaskModel collectTaskModel = collectTaskMapper.selectById(collectInstance.getTaskId());
+                    //获取该任务最近一次成功的实例的创建的时间
+                    Timestamp latestDate = collectInstanceMapper.selectLatestSuccessById(taskId);
                     List<String> withdrawFiles = withdrawContributionMapper.selectAllFilePath();
                     //提交运行实例
-                    Future<CollectResultEntity> future = instancePool.submit(new CollectTaskCallable(collectTaskModel, withdrawFiles, elasticsearchDao));
+                    Future<CollectResultEntity> future = instancePool.submit(new CollectTaskCallable(collectTaskModel, withdrawFiles, elasticsearchDao, latestDate));
                     //将future放入运行结果map
                     instanceMap.put(instanceId, future);
                     //将实例状态置为运行中
@@ -98,12 +104,16 @@ public class CollectInstanceSchedule {
                             String message = collectResult.getMessage();
                             //将实例状态置为失败
                             collectInstanceMapper.updateStatusById(instanceId, FAILED);
+                            //更新实例完成时间
+                            collectInstanceMapper.updateEndTimeById(instanceId, new Timestamp(System.currentTimeMillis()));
                             //从实例结果map中删除实例
                             instanceMap.remove(instanceId);
                             logger.error("实例：" + instanceId + " 运行失败：" + message);
                         }else {
                             //将实例状态置为成功
                             collectInstanceMapper.updateStatusById(instanceId, SUCCESS);
+                            //更新实例完成时间
+                            collectInstanceMapper.updateEndTimeById(instanceId, new Timestamp(System.currentTimeMillis()));
                             //从实例结果map中删除实例
                             instanceMap.remove(instanceId);
                             logger.info("实例：" + instanceId + " 运行成功");
@@ -115,6 +125,8 @@ public class CollectInstanceSchedule {
                     e.printStackTrace();
                     //将实例置为失败
                     collectInstanceMapper.updateStatusById(instanceId, FAILED);
+                    //更新实例完成时间
+                    collectInstanceMapper.updateEndTimeById(instanceId, new Timestamp(System.currentTimeMillis()));
                     //从实例结果map中删除实例
                     instanceMap.remove(instanceId);
                 }

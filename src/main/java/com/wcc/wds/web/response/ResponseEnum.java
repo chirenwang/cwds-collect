@@ -35,7 +35,21 @@ public enum ResponseEnum {
     
     FILE_SET_CONTENT_ERROR(1004, "文件内容设置失败"),
     
-    FILE_DELETE_ERROR(1004, "文件删除失败");
+    FILE_DELETE_ERROR(1005, "文件删除失败"),
+
+    ES_SEARCH_FAILED(1006, "查询ES失败"),
+
+    CREATE_TASK_FAILED(1008, "创建采集任务失败"),
+
+    DELETE_TASK_FAILED(1009, "删除采集任务失败"),
+
+    PAUSE_TASK_FAILED(1010, "暂停采集任务失败"),
+
+    MODIFY_TASK_FAILED(1011, "更新采集任务失败"),
+
+    SEARCH_TASK_FAILED(1012, "查询采集任务失败"),
+
+    NO_SUCH_OPERATE(1013, "不支持的操作类型");
 
     public Integer code;
 

@@ -3,7 +3,7 @@ package com.wcc.wds.web.mapper;
 import com.wcc.wds.web.model.CollectInstanceModel;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -59,7 +59,7 @@ public interface CollectInstanceMapper {
      * @param instanceId
      * @param endTime
      */
-    void updateEndTimeById(String instanceId, Date endTime);
+    void updateEndTimeById(String instanceId, Timestamp endTime);
 
 
     /**
@@ -67,6 +67,12 @@ public interface CollectInstanceMapper {
      * @return
      */
     List<CollectInstanceModel> selectLatest();
+
+    /**
+     * 根据id查找最新实例
+     * @return
+     */
+    Timestamp selectLatestSuccessById(String taskId);
 
 
 

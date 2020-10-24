@@ -20,6 +20,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import static com.wcc.wds.web.data.PublicData.*;
 
+/**
+ * 采集文件线程
+ */
 public class ReadRunnable implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(ReadRunnable.class);
@@ -88,6 +91,7 @@ public class ReadRunnable implements Runnable {
                         String url = domainUrl + path;
                         //构建es对象
                         ElasticsearchModel elasticsearchModel = new ElasticsearchModel(title, id, articleMain, collectTime, source, editor, url, path, PUBLISHED, nodeNames, publishTime, domainId);
+                        //写入es
                         elasticsearchDao.addDocumentToBulkProcessor(elasticsearchModel);
                     }catch (Exception e){
                         String message = e.getMessage();
