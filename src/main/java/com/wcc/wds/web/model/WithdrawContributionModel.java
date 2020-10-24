@@ -14,14 +14,14 @@ public class WithdrawContributionModel {
     /**
      * 撤稿方式
      */
-    private String withdraw_type;
+    private String withdrawType;
     /**
      * 撤稿后文件路径
      */
-    private String withdraw_file_path;
+    private String withdrawFilePath;
     /**
      * 源文件路径
      */
-    private String file_path;
+    private String filePath;
 
 }

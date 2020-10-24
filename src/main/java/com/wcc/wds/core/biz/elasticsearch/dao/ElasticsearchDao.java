@@ -1,6 +1,7 @@
 package com.wcc.wds.core.biz.elasticsearch.dao;
 
 import com.alibaba.fastjson.JSON;
+import com.wcc.wds.web.entity.NodeNameEntity;
 import com.wcc.wds.web.model.ElasticsearchModel;
 import org.elasticsearch.action.bulk.BackoffPolicy;
 import org.elasticsearch.action.bulk.BulkProcessor;
@@ -17,8 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Arrays;
+import java.util.Date;
 
 @Component
 public class ElasticsearchDao {
@@ -34,17 +38,17 @@ public class ElasticsearchDao {
         BulkProcessor.Listener listener = new BulkProcessor.Listener() {
             @Override
             public void beforeBulk(long executionId, BulkRequest request) {
-                logger.info("序号：{} 开始执行{} 条记录保存",executionId,request.numberOfActions());
+                logger.info("序号：{} 开始执行{} 条记录保存", executionId, request.numberOfActions());
             }
 
             @Override
             public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
-                logger.error(String.format("序号：%s 执行失败; 总记录数：%s",executionId,request.numberOfActions()),failure);
+                logger.error(String.format("序号：%s 执行失败; 总记录数：%s", executionId, request.numberOfActions()), failure);
             }
 
             @Override
             public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
-                logger.info("序号：{} 执行{}条记录保存成功,耗时：{}毫秒,",executionId,request.numberOfActions(),response.getIngestTookInMillis());
+                logger.info("序号：{} 执行{}条记录保存成功,耗时：{}毫秒,", executionId, request.numberOfActions(), response.getIngestTookInMillis());
             }
         };
         BulkProcessor.Builder builder = BulkProcessor.builder(
@@ -63,11 +67,11 @@ public class ElasticsearchDao {
 
     @PreDestroy
     public void closeBulk() {
-        if(bulkProcessor != null) {
+        if (bulkProcessor != null) {
             try {
                 bulkProcessor.close();
-            }catch (Exception e) {
-                logger.error("close bulkProcessor exception",e);
+            } catch (Exception e) {
+                logger.error("close bulkProcessor exception", e);
             }
         }
     }
@@ -76,10 +80,6 @@ public class ElasticsearchDao {
     public void addDocumentToBulkProcessor(ElasticsearchModel elasticsearchModel) {
         bulkProcessor.add(new IndexRequest("posts").id(elasticsearchModel.getId()).source(XContentType.JSON, JSON.toJSONString(elasticsearchModel)));
     }
-
-
-
-
 
 
 }

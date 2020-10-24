@@ -33,6 +33,8 @@ public class ElasticsearchModel {
 
     private String domainId;
 
+    public ElasticsearchModel(){};
+
     public ElasticsearchModel(String title, String id, String text, Date time, String source, String editor, String url, String serverCatalogue, String status, List<NodeNameEntity> nodeNames, String publishTime, String domainId) {
         this.title = title;
         this.id = id;
@@ -47,4 +49,5 @@ public class ElasticsearchModel {
         this.publishTime = publishTime;
         this.domainId = domainId;
     }
+
 }

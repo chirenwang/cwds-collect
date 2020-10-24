@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wcc.wds.web.mapper.WithdrawContributionMapper">
-  <select id="selectAll" resultType="com.wcc.wds.web.model.WithdrawContributionModel">
+
+    <resultMap id="baseMap" type="com.wcc.wds.web.model.WithdrawContributionModel">
+        <id property="id" column="id"/>
+        <result property="withdrawType" column="withdraw_type"/>
+        <result property="withdrawFilePath" column="withdraw_path"/>
+        <result property="filePath" column="file_path"/>
+    </resultMap>
+
+    <select id="selectAll" resultType="com.wcc.wds.web.model.WithdrawContributionModel">
     select * from tb_withdraw_contribution
   </select>
 
-  <select id="selectById" resultType="com.wcc.wds.web.model.WithdrawContributionModel">
+    <select id="selectById" resultMap="baseMap">
     select * from tb_withdraw_contribution where id = #{id}
   </select>
 
-  <insert id="insert" parameterType="com.wcc.wds.web.model.WithdrawContributionModel">
+    <insert id="insert" parameterType="com.wcc.wds.web.model.WithdrawContributionModel">
     insert into tb_withdraw_contribution(id,withdraw_type,withdraw_path,file_path)
-    values (#{id},#{withdraw_type},#{withdraw_file_path},#{file_path})
+    values (#{id},#{withdrawType},#{withdrawFilePath},#{filePath})
   </insert>
 
-  <delete id="deleteById">
+    <delete id="deleteById">
     delete from tb_withdraw_contribution where id = #{id}
   </delete>
 
-  <select id="selectAllFilePath" resultType="java.lang.String">
+    <select id="selectAllFilePath" resultType="java.lang.String">
     select file_path from tb_withdraw_contribution
   </select>
 </mapper>

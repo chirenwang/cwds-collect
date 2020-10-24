@@ -8,6 +8,7 @@
  */
 package com.wcc.wds.web.dao;
 
+import com.wcc.wds.web.mapper.WithdrawContributionMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,17 +17,22 @@ import com.wcc.wds.web.model.WithdrawContributionModel;
 public class WithdrawContributionDaoTest extends BaseDaoTest {
 
     @Autowired
-    public WithdrawContributionDao withdrawContributionDao;
+    public WithdrawContributionMapper withdrawContributionDao;
 
     @Test
     public void test() {
         WithdrawContributionModel wcb = new WithdrawContributionModel();
 
         wcb.setId("3");
-        wcb.setWithdraw_file_path("asd");
-        wcb.setWithdraw_type("asd");
-        wcb.setFile_path("asdf");
+        wcb.setWithdrawFilePath("asd");
+        wcb.setWithdrawType("asd");
+        wcb.setFilePath("asdf");
         withdrawContributionDao.insert(wcb);
         System.out.println(withdrawContributionDao.selectAll());
+    }
+
+    @Test
+    public void test2(){
+        System.out.println(withdrawContributionDao.selectById("1"));
     }
 }

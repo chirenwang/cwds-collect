@@ -35,7 +35,9 @@ public enum ResponseEnum {
     
     FILE_SET_CONTENT_ERROR(1004, "文件内容设置失败"),
     
-    FILE_DELETE_ERROR(1004, "文件删除失败");
+    FILE_DELETE_ERROR(1004, "文件删除失败"),
+
+    FILE_DOES_NOT_EXIST_ERROR(1007, "加密文件不存在，恢复失败");
 
     public Integer code;
 
