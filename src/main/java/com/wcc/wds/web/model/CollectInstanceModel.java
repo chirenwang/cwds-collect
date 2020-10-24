@@ -3,6 +3,7 @@ package com.wcc.wds.web.model;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -25,11 +26,11 @@ public class CollectInstanceModel {
     /**
      * 实例开始时间
      */
-    private Date startTime;
+    private Timestamp startTime;
     /**
      * 实例结束时间
      */
-    private Date endTime;
+    private Timestamp endTime;
     /**
      * 重试次数
      */

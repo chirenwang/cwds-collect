@@ -6,6 +6,7 @@ import com.wcc.wds.web.model.CollectTaskModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -29,10 +30,13 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
 
     private final ElasticsearchDao elasticsearchDao;
 
-    public CollectTaskCallable(CollectTaskModel collectTaskModel, List<String> withdrawFiles, ElasticsearchDao elasticsearchDao) {
+    private final Timestamp latestDate;
+
+    public CollectTaskCallable(CollectTaskModel collectTaskModel, List<String> withdrawFiles, ElasticsearchDao elasticsearchDao,  Timestamp latestDate) {
         this.collectTaskModel = collectTaskModel;
         this.withdrawFiles = withdrawFiles;
         this.elasticsearchDao = elasticsearchDao;
+        this.latestDate = latestDate;
     }
 
 
@@ -58,7 +62,7 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
             //list任务大小
             int listSize = collectPaths.length;
             for (String collectPath : collectPaths){
-                listPool.submit(new ListRunnable(fileQueue, collectPath, regex, atomicInteger, withdrawFiles));
+                listPool.submit(new ListRunnable(fileQueue, collectPath, regex, atomicInteger, withdrawFiles, latestDate));
             }
             //读文件任务线程池
             ExecutorService readPool = Executors.newFixedThreadPool(threadNum);

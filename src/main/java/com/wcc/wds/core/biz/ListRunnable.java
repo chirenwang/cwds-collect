@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,6 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static com.wcc.wds.web.data.PublicData.FILE_SCHEMA;
 
+/**
+ * 遍历文件线程
+ */
 public class ListRunnable implements Runnable{
 
     private final static Logger logger = LoggerFactory.getLogger(ListRunnable.class);
@@ -24,14 +29,16 @@ public class ListRunnable implements Runnable{
     private final String regex;
     private final AtomicInteger atomicInteger;
     private final List<String> withdrawFiles;
+    private final Timestamp latestDate;
 
 
-    public ListRunnable(ConcurrentLinkedQueue<String> fileQueue, String collectPath, String regex, AtomicInteger atomicInteger, List<String> withdrawFiles) {
+    public ListRunnable(ConcurrentLinkedQueue<String> fileQueue, String collectPath, String regex, AtomicInteger atomicInteger, List<String> withdrawFiles, Timestamp latestDate) {
         this.fileQueue = fileQueue;
         this.collectPath = collectPath;
         this.regex = regex;
         this.atomicInteger = atomicInteger;
         this.withdrawFiles = withdrawFiles;
+        this.latestDate = latestDate;
     }
 
 
@@ -64,6 +71,8 @@ public class ListRunnable implements Runnable{
         FileStatus[] fileStatuses = fileSystem.listStatus(new Path(collectPath));
         for (FileStatus fileStatus : fileStatuses){
             String path = fileStatus.getPath().toString();
+            //如果文件修改时间比上次采集的时间大，则为更新文件，需要采集
+            if (latestDate != null){ if (latestDate.getTime() > fileStatus.getModificationTime())continue;}
             //如果是已撤稿文件，则不采集
             if (withdrawFiles.contains(path)){continue;}
             //如果是文件则将文件路径加入文件队列，若是目录则递归下一级

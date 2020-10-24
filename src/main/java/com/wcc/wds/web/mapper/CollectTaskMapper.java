@@ -14,10 +14,14 @@ public interface CollectTaskMapper {
 
      List<String> selectIdByStatus(String taskStatus);
 
+     List<String> selectOnceIdByStatus(String taskStatus);
+
      void insert(CollectTaskModel collectTaskModel);
 
      void deleteByName(String taskName);
 
      void updateNotNullByName(CollectTaskModel collectTaskModel);
+
+     void updateStatusById(String id, String status);
 
 }

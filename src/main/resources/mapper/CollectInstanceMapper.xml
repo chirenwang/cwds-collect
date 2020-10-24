@@ -42,4 +42,8 @@
   <update id="updateRetryTimeById">
     update wds_collect_task set retry_time = #{param2} where instance_id = #{param1}
   </update>
+
+  <select id="selectLatestSuccessById" resultType="java.sql.Timestamp">
+    select Max(start_time) from wds_collect_task where task_id = #{taskId} and instance_status = 'success'
+  </select>
 </mapper>
