@@ -22,7 +22,7 @@ public class FileCollectTest {
         File sourceFile = new File("C:\\Users\\60269\\Desktop\\content_1876543.htm");
         System.out.println(sourceFile.exists());
         Configuration configuration = new Configuration();
-        FileSystem fileSystem = FileSystem.get(URI.create("file:///"), configuration);
+        FileSystem fileSystem = FileSystem.getLocal(configuration);
         Path path = new Path("C:\\Users\\60269\\Desktop\\content_1876543.htm");
         System.out.println(path.toString());
         FSDataInputStream in = fileSystem.open(new Path("C:\\Users\\60269\\Desktop\\content_1876543.htm"));

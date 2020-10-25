@@ -82,7 +82,7 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
             readPool.shutdown();
         }
         while (true){
-            if (readPool.isShutdown() && listPool.isShutdown()){
+            if (readPool.isTerminated() && listPool.isTerminated()){
                 logger.info("collect Instance complete");
                 return collectResultEntity;
             }

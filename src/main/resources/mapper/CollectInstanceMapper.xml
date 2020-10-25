@@ -18,8 +18,8 @@
   </select>
 
   <insert id="insert" parameterType="com.wcc.wds.web.model.CollectInstanceModel">
-    insert into wds_collect_task(instance_id,task_id,instance_status,start_time)
-    values (#{instanceId},#{taskId},#{instanceStatus},#{startTime})
+    insert into wds_collect_task(instance_id,task_id,instance_status,start_time,retry_time)
+    values (#{instanceId},#{taskId},#{instanceStatus},#{startTime},#{retryTime})
   </insert>
 
   <delete id="deleteById">

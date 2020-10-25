@@ -110,6 +110,7 @@ public class CollectTaskSchedule {
         newInstance.setInstanceId(UUID.randomUUID().toString());
         newInstance.setStartTime(new Timestamp(System.currentTimeMillis()));
         newInstance.setTaskId(taskId);
+        newInstance.setRetryTime(0);
         return newInstance;
     }
 

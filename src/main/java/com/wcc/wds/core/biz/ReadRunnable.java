@@ -12,10 +12,8 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import static com.wcc.wds.web.data.PublicData.*;
@@ -51,7 +49,7 @@ public class ReadRunnable implements Runnable {
     public void run() {
         try {
             //构建本地文件系统
-            FileSystem fileSystem = FileSystem.get(URI.create(FILE_SCHEMA), new Configuration());
+            FileSystem fileSystem = FileSystem.getLocal(new Configuration());
             Date collectTime = new Date(System.currentTimeMillis());
             logger.info("start to read file：" + collectTime.getTime());
             int failedCount = 0;

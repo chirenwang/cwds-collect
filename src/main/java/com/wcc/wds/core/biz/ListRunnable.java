@@ -8,15 +8,12 @@ import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
-import java.net.URI;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static com.wcc.wds.web.data.PublicData.FILE_SCHEMA;
 
 /**
  * 遍历文件线程
@@ -65,8 +62,7 @@ public class ListRunnable implements Runnable{
      */
     private void listFiles(String collectPath, String regex) throws IOException {
         //构建本地文件系统
-        //获取本地文件系统
-        FileSystem fileSystem = FileSystem.get(URI.create(FILE_SCHEMA), new Configuration());
+        FileSystem fileSystem = FileSystem.getLocal(new Configuration());
         //生成正则表达式对象
         Pattern pattern = Pattern.compile(regex);
         //获取当前文件夹下的对象
