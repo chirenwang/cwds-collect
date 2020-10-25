@@ -53,6 +53,7 @@ public class ReadRunnable implements Runnable {
             //构建本地文件系统
             FileSystem fileSystem = FileSystem.get(URI.create(FILE_SCHEMA), new Configuration());
             Date collectTime = new Date(System.currentTimeMillis());
+            logger.info("start to read file：" + collectTime.getTime());
             int failedCount = 0;
             //当文件队列为空或者list任务已经运行完时，结束循环
             while (!fileQueue.isEmpty() || atomicInteger.get() != listSize) {

@@ -41,6 +41,7 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
 
     @Override
     public CollectResultEntity call(){
+        logger.info("run：" + collectTaskModel.getId() + " instance");
         //实例运行结果
         CollectResultEntity collectResultEntity = new CollectResultEntity(1, "success");
         //线程数

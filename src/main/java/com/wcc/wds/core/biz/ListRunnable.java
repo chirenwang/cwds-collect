@@ -47,6 +47,7 @@ public class ListRunnable implements Runnable{
     @Override
     public void run() {
         try {
+            logger.info("start to list file：" + collectPath);
             listFiles(collectPath, regex);
             atomicInteger.getAndAdd(1);
         }catch (Exception e){

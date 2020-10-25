@@ -90,7 +90,6 @@ public class ElasticsearchDao {
 
 
     public void addDocumentToBulkProcessor(ElasticsearchModel elasticsearchModel) {
-        logger.info(JSON.toJSONString(elasticsearchModel));
         bulkProcessor.add(new IndexRequest("posts").id(elasticsearchModel.getId()).source((JSONObject)JSON.toJSON(elasticsearchModel)));
     }
 
