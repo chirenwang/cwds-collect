@@ -1,7 +1,9 @@
 package com.wcc.wds.core.biz.elasticsearch.dao;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.wcc.wds.web.model.ElasticsearchModel;
+import lombok.SneakyThrows;
 import org.elasticsearch.action.bulk.BackoffPolicy;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -48,9 +50,11 @@ public class ElasticsearchDao {
                 logger.info("序号：{} 开始执行{} 条记录保存",executionId,request.numberOfActions());
             }
 
+            @SneakyThrows
             @Override
             public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
                 logger.error(String.format("序号：%s 执行失败; 总记录数：%s",executionId,request.numberOfActions()),failure);
+                throw failure;
             }
 
             @Override
@@ -69,6 +73,7 @@ public class ElasticsearchDao {
         builder.setBackoffPolicy(BackoffPolicy
                 .constantBackoff(TimeValue.timeValueSeconds(1L), 3));
         bulkProcessor = builder.build();
+        logger.info("start es bulkPorcessor");
     }
 
 
@@ -85,7 +90,8 @@ public class ElasticsearchDao {
 
 
     public void addDocumentToBulkProcessor(ElasticsearchModel elasticsearchModel) {
-        bulkProcessor.add(new IndexRequest("posts").id(elasticsearchModel.getId()).source(XContentType.JSON, JSON.toJSONString(elasticsearchModel)));
+        logger.info(JSON.toJSONString(elasticsearchModel));
+        bulkProcessor.add(new IndexRequest("posts").id(elasticsearchModel.getId()).source((JSONObject)JSON.toJSON(elasticsearchModel)));
     }
 
     /**

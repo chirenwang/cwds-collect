@@ -27,6 +27,7 @@ public class ElasticsearchClient {
         @PostConstruct
         public void initialize(){
             client = new RestHighLevelClient(RestClient.builder(new HttpHost(esHost, esPort, "http")));
+            logger.info("start es client");
         }
 
         @Bean
@@ -41,6 +42,7 @@ public class ElasticsearchClient {
             if (client != null) {
                 try {
                     client.close();
+                    logger.info("close es client");
                 }catch (Exception e){
                     logger.error("close bulkProcessor exception" ,e);
                 }

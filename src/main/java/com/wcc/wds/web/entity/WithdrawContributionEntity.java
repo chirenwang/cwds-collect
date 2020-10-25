@@ -11,6 +11,8 @@ package com.wcc.wds.web.entity;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author pengguang
@@ -22,11 +24,9 @@ public class WithdrawContributionEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @NotNull(message = "稿件id不能为空")
-    private String id;
+    private Map<String, String> idAndFilePath;
 
     @NotNull(message = "稿件类型不能为空")
     private String withdrawType;
 
-    @NotNull(message = "稿件路径不能为空")
-    private String filePath;
 }

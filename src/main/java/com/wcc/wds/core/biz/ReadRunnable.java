@@ -53,6 +53,7 @@ public class ReadRunnable implements Runnable {
             //构建本地文件系统
             FileSystem fileSystem = FileSystem.get(URI.create(FILE_SCHEMA), new Configuration());
             Date collectTime = new Date(System.currentTimeMillis());
+            int failedCount = 0;
             //当文件队列为空或者list任务已经运行完时，结束循环
             while (!fileQueue.isEmpty() || atomicInteger.get() != listSize) {
                 String path = fileQueue.poll();
@@ -63,12 +64,14 @@ public class ReadRunnable implements Runnable {
                         byte[] bytes = new byte[in.available()];
                         in.read(bytes);
                         String content = new String(bytes);
+                        //判断文件不为空
+                        if (StringUtils.isEmpty(content)|| " ".equals(content)) continue;
                         //使用jsoup解析
                         Document document = Jsoup.parse(content);
                         //如果文件内容是撤稿内容，则跳过
                         if (document.getElementsByTag(BODY).text().equals(DELETED)){ continue;}
                         //稿件id
-                        String id = new Path(path).getName() + UUID.randomUUID().toString();
+                        String id = String.valueOf(Math.abs(path.hashCode()));
                         //标题
                         String title = document.getElementsByTag(TITLE).text();
                         //正文
@@ -94,6 +97,9 @@ public class ReadRunnable implements Runnable {
                         //写入es
                         elasticsearchDao.addDocumentToBulkProcessor(elasticsearchModel);
                     }catch (Exception e){
+                        //如果失败的次数超过5，则任务失败
+                        if (failedCount > 5) throw e;
+                        failedCount++;
                         String message = e.getMessage();
                         logger.error("read file :" + path + "failed :" +e.getMessage());
                         collectResultEntity.setRet(-1);

@@ -5,7 +5,6 @@ import com.wcc.wds.web.entity.CollectResultEntity;
 import com.wcc.wds.web.model.CollectTaskModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -44,6 +43,12 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
     public CollectResultEntity call(){
         //实例运行结果
         CollectResultEntity collectResultEntity = new CollectResultEntity(1, "success");
+        //线程数
+        int threadNum = collectTaskModel.getThreadNum();
+        //list任务线程池
+        ExecutorService listPool = Executors.newFixedThreadPool(threadNum);
+        //读文件任务线程池
+        ExecutorService readPool = Executors.newFixedThreadPool(threadNum);
         try {
             //获取采集路径
             String[] collectPaths = collectTaskModel.getCollectPath().split(",");
@@ -53,19 +58,14 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
             String domainId = collectTaskModel.getDomainId();
             //域名url
             String domainUrl = collectTaskModel.getDomainUrl();
-            //线程数
-            int threadNum = collectTaskModel.getThreadNum();
+
             //判断list任务是否运行完成
             AtomicInteger atomicInteger = new AtomicInteger();
-            //list任务线程池
-            ExecutorService listPool = Executors.newFixedThreadPool(threadNum);
             //list任务大小
             int listSize = collectPaths.length;
             for (String collectPath : collectPaths){
                 listPool.submit(new ListRunnable(fileQueue, collectPath, regex, atomicInteger, withdrawFiles, latestDate));
             }
-            //读文件任务线程池
-            ExecutorService readPool = Executors.newFixedThreadPool(threadNum);
             //读文件任务
             for(int i = 0; i < threadNum; i++){
                 readPool.submit(new ReadRunnable(fileQueue, atomicInteger, listSize, collectResultEntity, domainId, domainUrl, elasticsearchDao));
@@ -75,8 +75,17 @@ public class CollectTaskCallable implements Callable<CollectResultEntity> {
             logger.error("collect callable failed " + message);
             collectResultEntity.setRet(-1);
             collectResultEntity.setMessage(message);
+        }finally {
+            //关闭线程池
+            listPool.shutdown();
+            readPool.shutdown();
         }
-        return collectResultEntity;
+        while (true){
+            if (readPool.isShutdown() && listPool.isShutdown()){
+                logger.info("collect Instance complete");
+                return collectResultEntity;
+            }
+        }
     }
 
 

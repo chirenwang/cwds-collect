@@ -11,6 +11,7 @@ package com.wcc.wds.web.entity;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author pengguang
@@ -22,5 +23,5 @@ public class RestoreContributionEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @NotNull(message = "稿件id不能为空")
-    private String id;
+    private List<String> ids;
 }

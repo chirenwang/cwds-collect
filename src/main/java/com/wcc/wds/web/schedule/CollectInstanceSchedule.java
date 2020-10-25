@@ -49,9 +49,9 @@ public class CollectInstanceSchedule {
     private ElasticsearchDao elasticsearchDao;
 
     /**
-     * 每5分钟扫一遍实例表运行实例
+     * 每分钟扫一遍实例表运行实例
      */
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     private void runInstance(){
         try {
             //查询所有创建及重试的实例
@@ -76,7 +76,6 @@ public class CollectInstanceSchedule {
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
             logger.error("运行实例错误" + e.getMessage());
         }
 
@@ -85,7 +84,7 @@ public class CollectInstanceSchedule {
     /**
      * 每5分钟检查一次正在运行的实例并更新数据库状态
      */
-    @Scheduled(cron = "0 0/5 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     private void checkInstance(){
         try {
             //查询正在运行的实例的状态
@@ -97,8 +96,8 @@ public class CollectInstanceSchedule {
                     if (future.isDone()){
                         //获取实例运行结果
                         CollectResultEntity collectResult = future.get();
-                        //若返回不为0，则说明实例失败
-                        if (collectResult.getRet() != 0){
+                        //若返回不为1，则说明实例失败
+                        if (collectResult.getRet() != 1){
                             String message = collectResult.getMessage();
                             //将实例状态置为失败
                             collectInstanceMapper.updateStatusById(instanceId, FAILED);
@@ -139,7 +138,6 @@ public class CollectInstanceSchedule {
                 collectInstanceMapper.updateRetryTimeById(instanceId, collectInstance.getRetryTime() + 1);
             }
         }catch (Exception e){
-            e.printStackTrace();
             logger.error("检查实例错误：" + e.getMessage());
         }
 

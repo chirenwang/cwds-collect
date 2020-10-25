@@ -4,11 +4,13 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.yarn.webapp.hamlet2.Hamlet;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,8 +19,12 @@ public class FileCollectTest {
 
 
     public static void main(String[] args) throws IOException, URISyntaxException {
+        File sourceFile = new File("C:\\Users\\60269\\Desktop\\content_1876543.htm");
+        System.out.println(sourceFile.exists());
         Configuration configuration = new Configuration();
         FileSystem fileSystem = FileSystem.get(URI.create("file:///"), configuration);
+        Path path = new Path("C:\\Users\\60269\\Desktop\\content_1876543.htm");
+        System.out.println(path.toString());
         FSDataInputStream in = fileSystem.open(new Path("C:\\Users\\60269\\Desktop\\content_1876543.htm"));
         byte[] bytes = new byte[in.available()];
         in.read(bytes);

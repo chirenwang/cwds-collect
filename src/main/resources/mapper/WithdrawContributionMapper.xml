@@ -11,7 +11,7 @@
         <result property="filePath" column="file_path"/>
     </resultMap>
 
-    <select id="selectAll" resultType="com.wcc.wds.web.model.WithdrawContributionModel">
+    <select id="selectAll" resultMap="baseMap">
     select * from tb_withdraw_contribution
   </select>
 

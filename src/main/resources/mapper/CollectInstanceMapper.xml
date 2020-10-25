@@ -9,6 +9,7 @@
     <result property="instanceStatus" column="instance_status"/>
     <result property="startTime" column="start_time"/>
     <result property="endTime" column="end_time"/>
+    <result property="retryTime" column="retry_time"/>
   </resultMap>
 
 
@@ -26,14 +27,14 @@
   </delete>
 
   <select id="selectByStatus" resultMap="baseMap">
-    select task_id from wds_collect_task where instance_status in
+    select task_id, instance_id from wds_collect_task where instance_status in
     <foreach collection="array" item="instanceStatus" index="index" open="(" close=")" separator=",">
         #{instanceStatus}
     </foreach>
   </select>
 
   <select id="selectLatest" resultMap="baseMap">
-    select Max(start_time), task_id from wds_collect_task group by task_id
+    select Max(start_time) as start_time, task_id from wds_collect_task group by task_id
     </select>
 
   <update id="updateStatusById">
@@ -53,6 +54,6 @@
   </update>
 
   <select id="selectLatestSuccessById" resultType="java.sql.Timestamp">
-    select Max(start_time) from wds_collect_task where task_id = #{taskId} and instance_status = 'success'
+    select Max(A.start_time) from wds_collect_task A join sys_collect_config B on A.task_id = B.id where B.id = #{taskId} and A.instance_status = 'success' and B.task_type = 'day'
   </select>
 </mapper>

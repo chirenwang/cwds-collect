@@ -63,6 +63,7 @@ public class ListRunnable implements Runnable{
      * @throws IOException
      */
     private void listFiles(String collectPath, String regex) throws IOException {
+        //构建本地文件系统
         //获取本地文件系统
         FileSystem fileSystem = FileSystem.get(URI.create(FILE_SCHEMA), new Configuration());
         //生成正则表达式对象
@@ -70,7 +71,8 @@ public class ListRunnable implements Runnable{
         //获取当前文件夹下的对象
         FileStatus[] fileStatuses = fileSystem.listStatus(new Path(collectPath));
         for (FileStatus fileStatus : fileStatuses){
-            String path = fileStatus.getPath().toString();
+            //去掉路径头
+            String path = fileStatus.getPath().toString().replaceAll("file:/", "");
             //如果文件修改时间比上次采集的时间大，则为更新文件，需要采集
             if (latestDate != null){ if (latestDate.getTime() > fileStatus.getModificationTime())continue;}
             //如果是已撤稿文件，则不采集

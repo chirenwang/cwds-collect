@@ -30,7 +30,6 @@ public class CollectTaskReqEntity extends BaseEntity{
     /**
      * 任务名
      */
-    @NotNull(message = "任务名不能为空")
     private String taskName;
     /**
      * 线程数
