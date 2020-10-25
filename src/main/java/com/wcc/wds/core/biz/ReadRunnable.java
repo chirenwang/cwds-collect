@@ -65,14 +65,21 @@ public class ReadRunnable implements Runnable {
                         byte[] bytes = new byte[in.available()];
                         in.read(bytes);
                         String content = new String(bytes);
-                        //判断文件不为空
+                        //如果文件为空，则跳过
                         if (StringUtils.isEmpty(content)|| " ".equals(content)) continue;
                         //使用jsoup解析
                         Document document = Jsoup.parse(content);
-                        //如果文件内容是撤稿内容，则跳过
-                        if (document.getElementsByTag(BODY).text().equals(DELETED)){ continue;}
                         //稿件id
                         String id = String.valueOf(Math.abs(path.hashCode()));
+                        //如果文件内容是翔宇撤稿内容，则更新es状态
+                        if (document.getElementsByTag(BODY).text().equals(DELETED)){
+                            ElasticsearchModel elasticsearchModel = new ElasticsearchModel();
+                            elasticsearchModel.setId(id);
+                            elasticsearchModel.setStatus(XY_WITHDREW);
+                            //写入es
+                            elasticsearchDao.addDocumentToBulkProcessor(elasticsearchModel);
+                            continue;
+                        }
                         //标题
                         String title = document.getElementsByTag(TITLE).text();
                         //正文

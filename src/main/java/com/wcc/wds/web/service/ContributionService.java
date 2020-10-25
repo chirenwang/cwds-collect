@@ -58,7 +58,7 @@ public class ContributionService {
             withdrawContributionModel.setId(entry.getKey());
             withdrawContributionModel.setFilePath(targetPath);
             withdrawContributionModel.setWithdrawFilePath(filePath);
-            withdrawContributionModel.setWithdrawType(dataModifyEntity.getWithdrawType());
+            withdrawContributionModel.setWithdrawType(PublicData.WITHDREW);
             withdrawContributionMapper.insert(withdrawContributionModel);
 
             //修改es的装填为撤稿

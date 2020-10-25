@@ -26,7 +26,5 @@ public class WithdrawContributionEntity extends BaseEntity {
     @NotNull(message = "稿件id不能为空")
     private Map<String, String> idAndFilePath;
 
-    @NotNull(message = "稿件类型不能为空")
-    private String withdrawType;
 
 }
