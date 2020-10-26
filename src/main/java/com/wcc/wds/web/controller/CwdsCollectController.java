@@ -1,6 +1,7 @@
 package com.wcc.wds.web.controller;
 
 import com.wcc.wds.web.entity.CollectTaskReqEntity;
+import com.wcc.wds.web.entity.SearchReqEntity;
 import com.wcc.wds.web.model.CollectTaskModel;
 import com.wcc.wds.web.response.Response;
 import com.wcc.wds.web.response.ResponseEnum;
@@ -45,9 +46,9 @@ public class CwdsCollectController extends BaseController {
      * 查询接口
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public Response<ArrayList<String>> search(@RequestBody String queryString) {
+    public Response<ArrayList<String>> search(@RequestBody SearchReqEntity searchReqEntity) {
         try {
-            return Response.success(searchService.search(queryString));
+            return Response.success(searchService.search(searchReqEntity.getSearchParam()));
         }catch (ServiceException e){
             return Response.fail(ResponseEnum.ES_SEARCH_FAILED);
         }

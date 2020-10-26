@@ -12,14 +12,16 @@
     <result property="taskType" column="task_type"/>
     <result property="threadNum" column="thread_num"/>
     <result property="taskStatus" column="task_status"/>
+    <result property="domainId" column="domain_id"/>
+    <result property="domainUrl" column="domain_url"/>
   </resultMap>
 
   <select id="selectAll" resultMap="baseMap">
     select * from sys_collect_config
   </select>
   <insert id="insert" parameterType="com.wcc.wds.web.model.CollectTaskModel">
-    insert into sys_collect_config(id,task_name,regex,collect_path,task_type,thread_num,task_status)
-    values (#{id},#{taskName},#{regex},#{collectPath},#{taskType},#{threadNum},#{taskStatus})
+    insert into sys_collect_config(id,task_name,regex,collect_path,task_type,thread_num,task_status,domain_id,domain_url)
+    values (#{id},#{taskName},#{regex},#{collectPath},#{taskType},#{threadNum},#{taskStatus},#{domainId},#{domainUrl})
   </insert>
   <delete id="deleteByName">
     delete from sys_collect_config where task_name = #{taskName}

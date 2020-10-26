@@ -19,11 +19,14 @@ public class FileCollectTest {
 
 
     public static void main(String[] args) throws IOException, URISyntaxException {
-        File sourceFile = new File("C:\\Users\\60269\\Desktop\\content_1876543.htm");
+        File sourceFile = new File("C:\\Users\\60269\\Desktop\\content_1876543.html");
         System.out.println(sourceFile.exists());
         Configuration configuration = new Configuration();
         FileSystem fileSystem = FileSystem.getLocal(configuration);
-        Path path = new Path("C:\\Users\\60269\\Desktop\\content_1876543.htm");
+        Path path = new Path("C:\\Users\\60269\\Desktop\\content_1876543.html");
+        String contributionId = path.getName().replaceAll("content_", "").replaceAll(".html","");
+        System.out.println(contributionId);
+
         System.out.println(path.toString());
         FSDataInputStream in = fileSystem.open(new Path("C:\\Users\\60269\\Desktop\\content_1876543.htm"));
         byte[] bytes = new byte[in.available()];
@@ -37,7 +40,7 @@ public class FileCollectTest {
         String editor = document.getElementsByClass("editor").text();
         String publishTime = document.getElementsByClass("publish-time").text();
         String positionInner = document.getElementsByClass("position-inner").text();
-
+        String a = "{\"query\":{\"match_all\":{}}}";
 
 //        System.out.println(articleMain.getElementsByTag("p").get(0).getElementsByTag("img").toString());
 

@@ -33,7 +33,7 @@ public class ReadRunnable implements Runnable {
     private final String domainId;
     private final ElasticsearchDao elasticsearchDao;
 
-    public ReadRunnable(ConcurrentLinkedQueue<String> fileQueue, AtomicInteger atomicInteger, int listSize, CollectResultEntity collectResultEntity, String domainUrl, String domainId, ElasticsearchDao elasticsearchDao) {
+    public ReadRunnable(ConcurrentLinkedQueue<String> fileQueue, AtomicInteger atomicInteger, int listSize, CollectResultEntity collectResultEntity, String domainId, String domainUrl, ElasticsearchDao elasticsearchDao) {
         this.fileQueue = fileQueue;
         this.atomicInteger = atomicInteger;
         this.listSize = listSize;
@@ -67,8 +67,10 @@ public class ReadRunnable implements Runnable {
                         if (StringUtils.isEmpty(content)|| " ".equals(content)) continue;
                         //使用jsoup解析
                         Document document = Jsoup.parse(content);
-                        //稿件id
+                        //数据唯一标识id
                         String id = String.valueOf(Math.abs(path.hashCode()));
+                        //稿件id
+                        String contributionId = new Path(path).getName().replaceAll("content_", "").replaceAll(".html","");
                         //如果文件内容是翔宇撤稿内容，则更新es状态
                         if (document.getElementsByTag(BODY).text().equals(DELETED)){
                             ElasticsearchModel elasticsearchModel = new ElasticsearchModel();
@@ -99,7 +101,7 @@ public class ReadRunnable implements Runnable {
                         //url
                         String url = domainUrl + path;
                         //构建es对象
-                        ElasticsearchModel elasticsearchModel = new ElasticsearchModel(title, id, articleMain, collectTime, source, editor, url, path, PUBLISHED, nodeNames, publishTime, domainId);
+                        ElasticsearchModel elasticsearchModel = new ElasticsearchModel(title, id, contributionId, articleMain, collectTime, source, editor, url, path, PUBLISHED, nodeNames, publishTime, domainId);
                         //写入es
                         elasticsearchDao.addDocumentToBulkProcessor(elasticsearchModel);
                     }catch (Exception e){

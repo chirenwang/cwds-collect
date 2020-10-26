@@ -24,7 +24,7 @@ public class WithdrawContributionEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @NotNull(message = "稿件id不能为空")
-    private Map<String, String> idAndFilePath;
+    private List<IdAndFilePathEntity> idAndFilePath;
 
 
 }

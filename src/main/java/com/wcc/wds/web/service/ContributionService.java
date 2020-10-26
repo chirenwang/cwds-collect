@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.wcc.wds.core.biz.elasticsearch.dao.ElasticsearchDao;
 import com.wcc.wds.web.data.PublicData;
+import com.wcc.wds.web.entity.IdAndFilePathEntity;
 import com.wcc.wds.web.entity.RestoreContributionEntity;
 import com.wcc.wds.web.mapper.WithdrawContributionMapper;
 import com.wcc.wds.web.model.ElasticsearchModel;
@@ -41,10 +42,10 @@ public class ContributionService {
      * @param dataModifyEntity
      */
     public void revoke(WithdrawContributionEntity dataModifyEntity) {
-        Map<String, String> idAndFilePath = dataModifyEntity.getIdAndFilePath();
-        for (Map.Entry<String, String> entry : idAndFilePath.entrySet()){
-            String filePath = entry.getValue();
-            String id = entry.getKey();
+        List<IdAndFilePathEntity> idAndFilePath = dataModifyEntity.getIdAndFilePath();
+        for (IdAndFilePathEntity idAndFilePathEntity: idAndFilePath){
+            String filePath = idAndFilePathEntity.getFilePath();
+            String id = idAndFilePathEntity.getId();
             String targetPath = fileRecoverPath + filePath;
             File sourceFile = new File(filePath);
             File targetFile = new File(targetPath);
@@ -55,7 +56,7 @@ public class ContributionService {
 
             //将撤稿信息入库到
             WithdrawContributionModel withdrawContributionModel = new WithdrawContributionModel();
-            withdrawContributionModel.setId(entry.getKey());
+            withdrawContributionModel.setId(id);
             withdrawContributionModel.setFilePath(targetPath);
             withdrawContributionModel.setWithdrawFilePath(filePath);
             withdrawContributionModel.setWithdrawType(PublicData.WITHDREW);
@@ -65,7 +66,7 @@ public class ContributionService {
             ElasticsearchModel elasticsearchModel = new ElasticsearchModel();
             elasticsearchModel.setId(id);
             elasticsearchModel.setStatus(PublicData.WITHDREW);
-            elasticsearchDao.addDocumentToBulkProcessor(elasticsearchModel);
+            elasticsearchDao.updateDocumentToBulkProcessor(elasticsearchModel);
         }
     }
 
@@ -90,7 +91,7 @@ public class ContributionService {
             ElasticsearchModel elasticsearchModel = new ElasticsearchModel();
             elasticsearchModel.setId(id);
             elasticsearchModel.setStatus(PublicData.PUBLISHED);
-            elasticsearchDao.addDocumentToBulkProcessor(elasticsearchModel);
+            elasticsearchDao.updateDocumentToBulkProcessor(elasticsearchModel);
         }
 
 

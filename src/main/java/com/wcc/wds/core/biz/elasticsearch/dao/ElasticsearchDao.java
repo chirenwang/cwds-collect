@@ -11,6 +11,7 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.ByteSizeUnit;
@@ -66,9 +67,9 @@ public class ElasticsearchDao {
                 (request, bulkListener) ->
                         client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener),
                 listener);
-        builder.setBulkActions(100);
+        builder.setBulkActions(500);
         builder.setBulkSize(new ByteSizeValue(10L, ByteSizeUnit.MB));
-        builder.setConcurrentRequests(0);
+        builder.setConcurrentRequests(2);
         builder.setFlushInterval(TimeValue.timeValueSeconds(10L));
         builder.setBackoffPolicy(BackoffPolicy
                 .constantBackoff(TimeValue.timeValueSeconds(1L), 3));
@@ -89,8 +90,20 @@ public class ElasticsearchDao {
     }
 
 
+    /**
+     * 插入数据
+     * @param elasticsearchModel
+     */
     public void addDocumentToBulkProcessor(ElasticsearchModel elasticsearchModel) {
-        bulkProcessor.add(new IndexRequest("posts").id(elasticsearchModel.getId()).source((JSONObject)JSON.toJSON(elasticsearchModel)));
+        bulkProcessor.add(new IndexRequest(esIndex).id(elasticsearchModel.getId()).source((JSONObject)JSON.toJSON(elasticsearchModel)));
+    }
+
+    /**
+     * 更新es表
+     * @param elasticsearchModel
+     */
+    public void updateDocumentToBulkProcessor(ElasticsearchModel elasticsearchModel){
+        bulkProcessor.add(new UpdateRequest(esIndex, elasticsearchModel.getId()).doc(JSON.toJSONString(elasticsearchModel), XContentType.JSON));
     }
 
     /**
@@ -103,7 +116,7 @@ public class ElasticsearchDao {
         try {
             WrapperQueryBuilder wrapperQueryBuilder = QueryBuilders.wrapperQuery(queryString);
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-            searchSourceBuilder.query(wrapperQueryBuilder);
+            searchSourceBuilder.size(300).query(wrapperQueryBuilder);
             SearchRequest request = new SearchRequest(esIndex);
             request.source(searchSourceBuilder);
             SearchResponse searchResponse = client.search(request, RequestOptions.DEFAULT);
@@ -112,6 +125,7 @@ public class ElasticsearchDao {
                 String sourceAsString = hit.getSourceAsString();
                 searchResult.add(sourceAsString);
             }
+            logger.info(String.valueOf(searchResult.size()));
             return searchResult;
         }catch (Exception e){
             logger.error("查询错误：" +  e.getMessage());
