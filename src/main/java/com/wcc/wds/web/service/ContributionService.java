@@ -54,6 +54,12 @@ public class ContributionService {
             //将源数据内容替换成自定义内容
             FileUtils.setContent(sourceFile, fileContent);
 
+            //修改es的装填为撤稿
+            ElasticsearchModel elasticsearchModel = new ElasticsearchModel();
+            elasticsearchModel.setId(id);
+            elasticsearchModel.setStatus(PublicData.WITHDREW);
+            elasticsearchDao.updateDocumentToBulkProcessor(elasticsearchModel);
+
             //将撤稿信息入库到
             WithdrawContributionModel withdrawContributionModel = new WithdrawContributionModel();
             withdrawContributionModel.setId(id);
@@ -62,11 +68,6 @@ public class ContributionService {
             withdrawContributionModel.setWithdrawType(PublicData.WITHDREW);
             withdrawContributionMapper.insert(withdrawContributionModel);
 
-            //修改es的装填为撤稿
-            ElasticsearchModel elasticsearchModel = new ElasticsearchModel();
-            elasticsearchModel.setId(id);
-            elasticsearchModel.setStatus(PublicData.WITHDREW);
-            elasticsearchDao.updateDocumentToBulkProcessor(elasticsearchModel);
         }
     }
 
@@ -85,13 +86,14 @@ public class ContributionService {
             FileUtils.decFile(sourceFile, targetFile);
             //删除加密文件
             FileUtils.delete(sourceFile);
-            //删除数据库记录
-            withdrawContributionMapper.deleteById(id);
             //修改es的装填为发布中
             ElasticsearchModel elasticsearchModel = new ElasticsearchModel();
             elasticsearchModel.setId(id);
             elasticsearchModel.setStatus(PublicData.PUBLISHED);
             elasticsearchDao.updateDocumentToBulkProcessor(elasticsearchModel);
+            //删除数据库记录
+            withdrawContributionMapper.deleteById(id);
+
         }
 
 
